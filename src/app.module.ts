@@ -2,18 +2,14 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { PostgreSqlDriver } from '@mikro-orm/postgresql';
+import mikroOrmConfig from '~/mikro-orm.config';
 
 @Module({
   imports: [
     MikroOrmModule.forRootAsync({
       useFactory: () => ({
-        entities: ['./dist/entities'],
-        entitiesTs: ['./src/entities'],
-        dbName: 'fishkeepers-hub-db',
-        password: 'password',
-        user: 'postgres',
-        driver: PostgreSqlDriver,
+        ...mikroOrmConfig,
+        autoLoadEntities: true,
       }),
     }),
   ],
