@@ -1,11 +1,11 @@
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
 import { ReactionType } from '@/shared/types/Reaction';
-import { BaseEntity, User, Comment, Post } from '.';
+import { CustomBaseEntity, User, Comment, Post } from '.';
 
 export type ReactionTarget = 'Post' | 'Comment';
 
 @Entity()
-export class Reaction extends BaseEntity {
+export class Reaction extends CustomBaseEntity {
   @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
   id!: string;
 

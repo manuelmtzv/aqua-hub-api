@@ -1,6 +1,6 @@
-import { BaseEntity as MikroBaseEntity, Property } from '@mikro-orm/core';
+import { BaseEntity, Property } from '@mikro-orm/core';
 
-export abstract class BaseEntity extends MikroBaseEntity {
+export abstract class CustomBaseEntity extends BaseEntity {
   @Property({ type: 'date' })
   createdAt = new Date();
 

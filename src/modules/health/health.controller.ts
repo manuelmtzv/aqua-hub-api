@@ -6,7 +6,7 @@ export class HealthController {
   check() {
     return {
       message: 'API is running',
-      timestamp: new Date().toISOString,
+      timestamp: new Date().toISOString(),
     };
   }
 }

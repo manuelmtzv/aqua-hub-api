@@ -7,7 +7,6 @@ const mikroOrmConfig: Options = {
   password: 'password',
   user: 'postgres',
   driver: PostgreSqlDriver,
-  entities: ['dist/**/*.entity.js'],
   entitiesTs: ['src/**/*.entity.ts'],
   extensions: [Migrator],
   migrations: {

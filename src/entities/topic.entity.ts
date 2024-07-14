@@ -5,10 +5,10 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { BaseEntity, Post } from '.';
+import { CustomBaseEntity, Post } from '.';
 
 @Entity()
-export class Topic extends BaseEntity {
+export class Topic extends CustomBaseEntity {
   @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
   id!: string;
 
