@@ -1,16 +1,5 @@
-// import { defineConfig } from '@mikro-orm/core';
 import { Options, PostgreSqlDriver } from '@mikro-orm/postgresql';
-
-// const mikroOrmConfig: Options = {
-//   entities: ['./dist/entities'],
-//   entitiesTs: ['./src/entities'],
-//   dbName: 'fishkeepers-hub-db',
-//   password: 'password',
-//   user: 'postgres',
-//   driver: PostgreSqlDriver,
-// };
-
-// export const config = defineConfig(mikroOrmConfig);
+import { Migrator } from '@mikro-orm/migrations';
 
 const mikroOrmConfig: Options = {
   host: '127.0.0.1',
@@ -20,6 +9,7 @@ const mikroOrmConfig: Options = {
   driver: PostgreSqlDriver,
   entities: ['dist/**/*.entity.js'],
   entitiesTs: ['src/**/*.entity.ts'],
+  extensions: [Migrator],
   migrations: {
     path: 'dist/migrations',
     pathTs: 'src/migrations',
