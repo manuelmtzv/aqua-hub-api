@@ -1,13 +1,17 @@
 import { Options, PostgreSqlDriver } from '@mikro-orm/postgresql';
 import { Migrator } from '@mikro-orm/migrations';
+import { config } from 'dotenv';
+
+config();
 
 const mikroOrmConfig: Options = {
-  host: '127.0.0.1',
-  dbName: 'fishkeepers-hub-db',
-  password: 'password',
-  user: 'postgres',
+  host: process.env.POSTGRES_HOST,
+  dbName: process.env.POSTGRES_DB,
+  password: process.env.POSTGRES_PASSWORD,
+  user: process.env.POSTGRES_USER,
+  port: parseInt(process.env.POSTGRES_PORT, 10),
   driver: PostgreSqlDriver,
-  entitiesTs: ['src/**/*.entity.ts'],
+  entities: ['dist/**/*.entity.js'],
   extensions: [Migrator],
   migrations: {
     path: 'dist/migrations',
