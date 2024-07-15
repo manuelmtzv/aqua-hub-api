@@ -1,6 +1,7 @@
-import { Options, PostgreSqlDriver } from '@mikro-orm/postgresql';
-import { Migrator } from '@mikro-orm/migrations';
 import { config } from 'dotenv';
+import { Migrator } from '@mikro-orm/migrations';
+import { SeedManager } from '@mikro-orm/seeder';
+import { Options, PostgreSqlDriver } from '@mikro-orm/postgresql';
 
 config();
 
@@ -11,11 +12,15 @@ const mikroOrmConfig: Options = {
   user: process.env.POSTGRES_USER,
   port: parseInt(process.env.POSTGRES_PORT, 10),
   driver: PostgreSqlDriver,
+  extensions: [Migrator, SeedManager],
   entities: ['dist/**/*.entity.js'],
-  extensions: [Migrator],
+  entitiesTs: ['src/**/*.entity.ts'],
   migrations: {
     path: 'dist/migrations',
     pathTs: 'src/migrations',
+  },
+  seeder: {
+    path: 'src/seeders/',
   },
 };
 
