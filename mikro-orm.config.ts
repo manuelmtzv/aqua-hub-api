@@ -2,6 +2,7 @@ import { config } from 'dotenv';
 import { Migrator } from '@mikro-orm/migrations';
 import { SeedManager } from '@mikro-orm/seeder';
 import { Options, PostgreSqlDriver } from '@mikro-orm/postgresql';
+import { TsMorphMetadataProvider } from '@mikro-orm/reflection';
 
 config();
 
@@ -12,9 +13,11 @@ const mikroOrmConfig: Options = {
   user: process.env.POSTGRES_USER,
   port: parseInt(process.env.POSTGRES_PORT, 10),
   driver: PostgreSqlDriver,
-  extensions: [Migrator, SeedManager],
   entities: ['dist/**/*.entity.js'],
   entitiesTs: ['src/**/*.entity.ts'],
+  debug: true,
+  metadataProvider: TsMorphMetadataProvider,
+  extensions: [Migrator, SeedManager],
   migrations: {
     path: 'dist/migrations',
     pathTs: 'src/migrations',

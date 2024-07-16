@@ -9,7 +9,6 @@ import { AuthModule, HealthModule, UserModule } from '@/modules';
     MikroOrmModule.forRootAsync({
       useFactory: () => ({
         ...mikroOrmConfig,
-        autoLoadEntities: true,
       }),
     }),
     ConfigModule.forRoot({

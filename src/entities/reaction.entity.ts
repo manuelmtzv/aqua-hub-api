@@ -9,13 +9,13 @@ export class Reaction extends CustomBaseEntity {
   @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
   id!: string;
 
-  @Property()
+  @Property({ type: 'text' })
   type!: ReactionType;
 
   @ManyToOne({ entity: () => User })
   user!: User;
 
-  @Property()
+  @Property({ type: 'text' })
   targetType!: ReactionTarget;
 
   @ManyToOne({ entity: () => Comment, nullable: true })

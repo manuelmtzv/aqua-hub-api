@@ -11,7 +11,7 @@ export class Media extends CustomBaseEntity {
   @Property()
   url!: string;
 
-  @Property()
+  @Property({ type: 'text' })
   target!: MediaTarget;
 
   @ManyToOne({ entity: () => Post, nullable: true })
