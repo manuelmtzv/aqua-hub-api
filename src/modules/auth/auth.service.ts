@@ -30,11 +30,9 @@ export class AuthService {
   async register(
     registerDto: RegisterDto,
   ): Promise<{ data: Partial<User>; token: string }> {
-    const hashedPassword = await argon.hash(registerDto.password);
-
     const user = await this.usersService.create({
       ...registerDto,
-      hashedPassword,
+      hashedPassword: registerDto.password,
     });
 
     delete user.hashedPassword;

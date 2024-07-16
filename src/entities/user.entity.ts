@@ -1,4 +1,5 @@
 import {
+  BeforeCreate,
   Collection,
   Entity,
   ManyToMany,
@@ -7,6 +8,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { CustomBaseEntity, Post } from '.';
+import * as argon from 'argon2';
 
 @Entity()
 export class User extends CustomBaseEntity {
@@ -42,4 +44,9 @@ export class User extends CustomBaseEntity {
 
   @OneToMany({ entity: () => Post, mappedBy: 'author' })
   posts = new Collection<Post>(this);
+
+  @BeforeCreate()
+  async hashPassword() {
+    this.hashedPassword = await argon.hash(this.hashedPassword);
+  }
 }

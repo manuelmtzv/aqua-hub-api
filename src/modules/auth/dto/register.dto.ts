@@ -7,6 +7,7 @@ import {
 } from 'class-validator';
 
 export class RegisterDto {
+  @IsNotEmpty()
   @IsEmail()
   email: string;
 
@@ -14,6 +15,7 @@ export class RegisterDto {
   @IsString()
   username: string;
 
+  @IsNotEmpty()
   @IsStrongPassword()
   password: string;
 
