@@ -18,7 +18,7 @@ export class Topic extends CustomBaseEntity {
   @Property()
   description!: string;
 
-  @Property()
+  @Property({ default: '#fff' })
   color!: string;
 
   @ManyToMany({ entity: () => Post, mappedBy: 'topics' })
