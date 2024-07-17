@@ -5,7 +5,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { CustomBaseEntity, Post } from '.';
+import { CustomBaseEntity, Forum, Post } from '.';
 
 @Entity()
 export class Topic extends CustomBaseEntity {
@@ -20,6 +20,9 @@ export class Topic extends CustomBaseEntity {
 
   @Property({ default: '#fff' })
   color!: string;
+
+  @ManyToMany({ entity: () => Forum, mappedBy: 'topics' })
+  forums = new Collection<Forum>(this);
 
   @ManyToMany({ entity: () => Post, mappedBy: 'topics' })
   posts = new Collection<Post>(this);

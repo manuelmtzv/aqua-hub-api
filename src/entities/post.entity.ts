@@ -8,7 +8,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { CustomBaseEntity } from './base.entity';
-import { User, Topic, Reaction, Media } from '.';
+import { User, Topic, Reaction, Media, Forum } from '.';
 
 @Entity()
 export class Post extends CustomBaseEntity {
@@ -26,6 +26,9 @@ export class Post extends CustomBaseEntity {
 
   @ManyToOne({ entity: () => User })
   author!: User;
+
+  @ManyToOne({ entity: () => Forum })
+  forum!: Forum;
 
   @ManyToMany({ entity: () => User, mappedBy: 'savedPosts' })
   savedBy = new Collection<User>(this);
