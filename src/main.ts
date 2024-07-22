@@ -8,7 +8,9 @@ async function bootstrap() {
 
   const config = app.get(ConfigService);
 
-  app.enableCors();
+  app.enableCors({
+    origin: '*',
+  });
   app.setGlobalPrefix('api');
 
   validationConfig(app);
