@@ -6,10 +6,12 @@ import { JwtPayload } from './types/JwtPayload';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '~/src/entities';
 import { LoginDto } from './dto/login.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly config: ConfigService,
     private readonly usersService: UserService,
     private readonly jwtService: JwtService,
   ) {}
@@ -29,7 +31,7 @@ export class AuthService {
 
   async register(
     registerDto: RegisterDto,
-  ): Promise<{ data: Partial<User>; token: string }> {
+  ): Promise<{ data: Partial<User>; token: string; expiresIn: string }> {
     const user = await this.usersService.create({
       ...registerDto,
       hashedPassword: registerDto.password,
@@ -40,12 +42,13 @@ export class AuthService {
     return {
       data: user,
       token: await this.generateJwtToken({ id: user.id }),
+      expiresIn: this.config.getOrThrow('JWT_EXPIRY'),
     };
   }
 
   async login(
     loginDto: LoginDto,
-  ): Promise<{ data: Partial<User>; token: string }> {
+  ): Promise<{ data: Partial<User>; token: string; expiresIn: string }> {
     const user = await this.usersService.findOne(loginDto.identifier);
 
     if (!user) {
@@ -63,6 +66,7 @@ export class AuthService {
     return {
       data: user,
       token: await this.generateJwtToken({ id: user.id }),
+      expiresIn: this.config.getOrThrow('JWT_EXPIRY'),
     };
   }
 
