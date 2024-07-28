@@ -2,16 +2,19 @@ import {
   BeforeCreate,
   Collection,
   Entity,
+  HiddenProps,
   ManyToMany,
   OneToMany,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { CustomBaseEntity, Post } from '.';
+import { CustomBaseEntity, Post, RefreshToken } from '.';
 import * as argon from 'argon2';
 
 @Entity()
 export class User extends CustomBaseEntity {
+  [HiddenProps]?: 'refreshTokens';
+
   @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
   id!: string;
 
@@ -44,6 +47,9 @@ export class User extends CustomBaseEntity {
 
   @OneToMany({ entity: () => Post, mappedBy: 'author' })
   posts = new Collection<Post>(this);
+
+  @OneToMany({ entity: () => RefreshToken, mappedBy: 'user', hidden: true })
+  refreshTokens = new Collection<RefreshToken>(this);
 
   @BeforeCreate()
   async hashPassword() {
