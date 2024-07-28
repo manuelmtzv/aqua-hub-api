@@ -10,6 +10,9 @@ export class RefreshToken extends CustomBaseEntity {
   @Property()
   hashedToken!: string;
 
+  @Property()
+  expiresAt!: Date;
+
   @ManyToOne({ entity: () => User })
   user!: User;
 }

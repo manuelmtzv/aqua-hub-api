@@ -124,8 +124,18 @@ export class AuthService {
       expiresIn: '',
     };
 
+    const refreshExpiresAt = new Date();
+    refreshExpiresAt.setSeconds(
+      refreshExpiresAt.getSeconds() +
+        Number(this.config.getOrThrow('JWT_REFRESH_EXPIRY')),
+    );
+
     await this.em.transactional(async (em) => {
-      const refreshToken = em.create(RefreshToken, { id: uuid(), user: id });
+      const refreshToken = em.create(RefreshToken, {
+        id: uuid(),
+        user: id,
+        expiresAt: refreshExpiresAt,
+      });
 
       tokens.accessToken = await this.generateAccessToken(id);
       tokens.refreshToken = await this.generateRefreshToken(
