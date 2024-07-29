@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { UploadApiErrorResponse, UploadApiResponse, v2 } from 'cloudinary';
 import { Readable } from 'stream';
-import { MediaService } from '@/shared/interfaces/mediaService.interface';
+import { MediaStorageService } from '~/src/shared/interfaces/mediaStorageService.interface';
 
 @Injectable()
-export class CloudinaryService implements MediaService {
+export class CloudinaryService implements MediaStorageService {
   async uploadImage(
     file: Express.Multer.File,
   ): Promise<UploadApiResponse | UploadApiErrorResponse> {
