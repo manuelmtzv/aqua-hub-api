@@ -23,6 +23,8 @@ export class AccessJwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   async validate(
     payload: JwtPayload,
   ): Promise<Omit<User, 'hashedPassword'> | undefined> {
+    console.log(payload);
+
     const { id } = payload;
     const user = await this.userService.findOneRaw(id);
 

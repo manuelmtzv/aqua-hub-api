@@ -25,12 +25,13 @@ export class AuthService {
   async validateUser(identifier: string, password: string) {
     const user = await this.usersService.findOne(identifier);
 
-    if (!user) return new BadRequestException('Email or password is incorrect');
+    if (!user)
+      return new BadRequestException('Email or password are incorrect');
 
     const valid = await argon.verify(user.hashedPassword, password);
 
     if (!valid)
-      return new BadRequestException('Email or password is incorrect');
+      return new BadRequestException('Email or password are incorrect');
 
     return null;
   }
@@ -69,13 +70,13 @@ export class AuthService {
     const user = await this.usersService.findOne(loginDto.identifier);
 
     if (!user) {
-      throw new BadRequestException('Email or password is incorrect');
+      throw new BadRequestException('Email or password are incorrect');
     }
 
     const valid = await argon.verify(user.hashedPassword, loginDto.password);
 
     if (!valid) {
-      throw new BadRequestException('Email or password is incorrect');
+      throw new BadRequestException('Email or password are incorrect');
     }
 
     const tokens = await this.generateJwtTokens({ id: user.id });
