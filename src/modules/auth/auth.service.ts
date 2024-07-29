@@ -1,16 +1,22 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import * as argon from 'argon2';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { v4 as uuid } from 'uuid';
 import { RegisterDto } from './dto/register.dto';
 import { UserService } from '../user';
-import * as argon from 'argon2';
-import { JwtPayload } from './types/JwtPayload';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '~/src/entities';
 import { LoginDto } from './dto/login.dto';
 import { ConfigService } from '@nestjs/config';
+import { Tokens } from './types';
+import { RefreshToken, User } from '~/src/entities';
+import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 
 @Injectable()
 export class AuthService {
   constructor(
+    @InjectRepository(RefreshToken)
+    private readonly refreshTokenRepository: EntityRepository<RefreshToken>,
+    private readonly em: EntityManager,
     private readonly config: ConfigService,
     private readonly usersService: UserService,
     private readonly jwtService: JwtService,
@@ -31,24 +37,35 @@ export class AuthService {
 
   async register(
     registerDto: RegisterDto,
-  ): Promise<{ data: Partial<User>; token: string; expiresIn: string }> {
+  ): Promise<Tokens & { data: Partial<User> }> {
+    let foundUser = await this.usersService.findOneRaw(registerDto.email);
+
+    if (foundUser) {
+      throw new BadRequestException('This email is already in use.');
+    }
+
+    foundUser = await this.usersService.findOneRaw(registerDto.username);
+
+    if (foundUser) {
+      throw new BadRequestException('This username is already in use.');
+    }
+
     const user = await this.usersService.create({
       ...registerDto,
       hashedPassword: registerDto.password,
     });
 
+    const tokens = await this.generateJwtTokens({ id: user.id });
+
     delete user.hashedPassword;
 
     return {
       data: user,
-      token: await this.generateJwtToken({ id: user.id }),
-      expiresIn: this.config.getOrThrow('JWT_EXPIRY'),
+      ...tokens,
     };
   }
 
-  async login(
-    loginDto: LoginDto,
-  ): Promise<{ data: Partial<User>; token: string; expiresIn: string }> {
+  async login(loginDto: LoginDto): Promise<Tokens & { data: Partial<User> }> {
     const user = await this.usersService.findOne(loginDto.identifier);
 
     if (!user) {
@@ -61,17 +78,110 @@ export class AuthService {
       throw new BadRequestException('Email or password is incorrect');
     }
 
+    const tokens = await this.generateJwtTokens({ id: user.id });
+
     delete user.hashedPassword;
 
     return {
       data: user,
-      token: await this.generateJwtToken({ id: user.id }),
+      ...tokens,
+    };
+  }
+
+  async logout(tokenId: string): Promise<void> {
+    const refreshToken = await this.refreshTokenRepository.findOne(tokenId);
+
+    if (refreshToken) {
+      this.em.removeAndFlush(refreshToken);
+    }
+  }
+
+  async updateRefreshToken(
+    user: User,
+    tokenId: string,
+    refreshToken: string,
+  ): Promise<Tokens & { data: User }> {
+    const refreshTokenEntity =
+      await this.refreshTokenRepository.findOne(tokenId);
+
+    if (!refreshTokenEntity) {
+      throw new BadRequestException('Invalid or disabled refresh token');
+    }
+
+    const valid = await argon.verify(
+      refreshTokenEntity.hashedToken,
+      refreshToken,
+    );
+
+    if (!valid) {
+      throw new BadRequestException('Invalid or disabled refresh token');
+    }
+
+    return {
+      data: user,
+      refreshToken,
+      accessToken: await this.generateAccessToken(user.id),
       expiresIn: this.config.getOrThrow('JWT_EXPIRY'),
     };
   }
 
-  private async generateJwtToken(payload: JwtPayload) {
-    const token = await this.jwtService.signAsync(payload);
-    return token;
+  private async generateJwtTokens({ id }: { id: string }): Promise<Tokens> {
+    const tokens: Tokens = {
+      accessToken: '',
+      refreshToken: '',
+      expiresIn: '',
+    };
+
+    const refreshExpiresAt = new Date();
+    refreshExpiresAt.setSeconds(
+      refreshExpiresAt.getSeconds() +
+        Number(this.config.getOrThrow('JWT_REFRESH_EXPIRY')),
+    );
+
+    await this.em.transactional(async (em) => {
+      const refreshToken = em.create(RefreshToken, {
+        id: uuid(),
+        user: id,
+        expiresAt: refreshExpiresAt,
+      });
+
+      tokens.accessToken = await this.generateAccessToken(id);
+      tokens.refreshToken = await this.generateRefreshToken(
+        id,
+        refreshToken.id,
+      );
+
+      refreshToken.hashedToken = await argon.hash(tokens.refreshToken);
+
+      await em.persistAndFlush(refreshToken);
+    });
+
+    return {
+      ...tokens,
+      expiresIn: this.config.getOrThrow('JWT_EXPIRY'),
+    };
+  }
+
+  private async generateAccessToken(id: string): Promise<string> {
+    return this.jwtService.signAsync(
+      { id },
+      {
+        secret: this.config.getOrThrow('JWT_SECRET'),
+        expiresIn: this.config.getOrThrow('JWT_EXPIRY'),
+      },
+    );
+  }
+
+  private async generateRefreshToken(
+    id: string,
+    tokenId: string,
+  ): Promise<string> {
+    return this.jwtService.signAsync(
+      { id, tokenId },
+      {
+        secret: this.config.getOrThrow('JWT_REFRESH_SECRET'),
+        expiresIn: this.config.getOrThrow('JWT_REFRESH_EXPIRY'),
+      },
+    );
   }
 }
