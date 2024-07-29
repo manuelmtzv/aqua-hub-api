@@ -18,7 +18,7 @@ export class UserService {
       ? { id: identifier }
       : { $or: [{ email: identifier }, { username: identifier }] };
 
-    return this.userRepository.findOne(query);
+    return this.userRepository.findOne(query, { disableIdentityMap: true });
   }
 
   async findOne(identifier: string): Promise<User> {
