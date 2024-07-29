@@ -35,10 +35,11 @@ export class AuthController {
     return this.authService.updateRefreshToken(user, tokenId, refreshToken);
   }
 
-  // @UseGuards(AuthGuard('jwt-refresh'))
-  // @Post('logout')
-  // async logout(@Req() req: RequestWithRefreshToken) {
-  //   const { user, tokenId } = req.user;
-  //   return this.authService.logout(user, tokenId);
-  // }
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UseGuards(AuthGuard('jwt-refresh'))
+  @Post('logout')
+  async logout(@Req() req: RequestWithRefreshToken) {
+    const { tokenId } = req.user;
+    return this.authService.logout(tokenId);
+  }
 }

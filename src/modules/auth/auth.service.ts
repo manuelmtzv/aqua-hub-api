@@ -88,6 +88,14 @@ export class AuthService {
     };
   }
 
+  async logout(tokenId: string): Promise<void> {
+    const refreshToken = await this.refreshTokenRepository.findOne(tokenId);
+
+    if (refreshToken) {
+      this.em.removeAndFlush(refreshToken);
+    }
+  }
+
   async updateRefreshToken(
     user: User,
     tokenId: string,

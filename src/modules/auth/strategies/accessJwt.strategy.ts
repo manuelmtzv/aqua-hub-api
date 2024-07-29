@@ -5,11 +5,13 @@ import { JwtPayload } from '../types/jwtPayload.type';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from '@/modules/user/user.service';
 import { User } from '~/src/entities';
+import { EntityManager } from '@mikro-orm/postgresql';
 
 @Injectable()
 export class AccessJwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
     private readonly userService: UserService,
+    private readonly em: EntityManager,
     config: ConfigService,
   ) {
     super({
@@ -29,6 +31,8 @@ export class AccessJwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     }
 
     delete user.hashedPassword;
+
+    this.em.clear();
 
     return user;
   }
