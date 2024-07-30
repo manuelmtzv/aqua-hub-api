@@ -16,15 +16,13 @@ export class AccessJwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: config.getOrThrow('JWT_SECRET'),
+      secretOrKey: config.getOrThrow<string>('JWT_SECRET'),
     });
   }
 
   async validate(
     payload: JwtPayload,
   ): Promise<Omit<User, 'hashedPassword'> | undefined> {
-    console.log(payload);
-
     const { id } = payload;
     const user = await this.userService.findOneRaw(id);
 

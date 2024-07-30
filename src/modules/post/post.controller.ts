@@ -1,20 +1,22 @@
 import {
   Controller,
   Get,
+  Headers,
   Param,
   ParseUUIDPipe,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { PostService } from './post.service';
+import { AccessJwtGuard } from '../auth/guards/accessJwt.guard';
 
 @Controller('posts')
-@UseGuards(AuthGuard('jwt'))
+@UseGuards(AccessJwtGuard)
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Get()
-  async findAll() {
+  async findAll(@Headers('authorization') authorization: string) {
+    console.log(authorization);
     return this.postService.findAll();
   }
 

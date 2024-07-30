@@ -146,11 +146,13 @@ export class AuthService {
         expiresAt: refreshExpiresAt,
       });
 
-      tokens.accessToken = await this.generateAccessToken(id);
-      tokens.refreshToken = await this.generateRefreshToken(
-        id,
-        refreshToken.id,
-      );
+      const [accessToken, generatedRefreshToken] = await Promise.all([
+        this.generateAccessToken(id),
+        this.generateRefreshToken(id, refreshToken.id),
+      ]);
+
+      tokens.accessToken = accessToken;
+      tokens.refreshToken = generatedRefreshToken;
 
       refreshToken.hashedToken = await argon.hash(tokens.refreshToken);
 
@@ -167,8 +169,8 @@ export class AuthService {
     return this.jwtService.signAsync(
       { id },
       {
-        secret: this.config.getOrThrow('JWT_SECRET'),
-        expiresIn: this.config.getOrThrow('JWT_EXPIRY'),
+        secret: this.config.getOrThrow<string>('JWT_SECRET'),
+        expiresIn: this.config.getOrThrow<number>('JWT_EXPIRY'),
       },
     );
   }
@@ -180,8 +182,8 @@ export class AuthService {
     return this.jwtService.signAsync(
       { id, tokenId },
       {
-        secret: this.config.getOrThrow('JWT_REFRESH_SECRET'),
-        expiresIn: this.config.getOrThrow('JWT_REFRESH_EXPIRY'),
+        secret: this.config.getOrThrow<string>('JWT_REFRESH_SECRET'),
+        expiresIn: this.config.getOrThrow<number>('JWT_REFRESH_EXPIRY'),
       },
     );
   }
