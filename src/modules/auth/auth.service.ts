@@ -170,7 +170,7 @@ export class AuthService {
       { id },
       {
         secret: this.config.getOrThrow<string>('JWT_SECRET'),
-        expiresIn: this.config.getOrThrow<number>('JWT_EXPIRY'),
+        expiresIn: parseInt(this.config.getOrThrow('JWT_EXPIRY')),
       },
     );
   }
@@ -183,7 +183,7 @@ export class AuthService {
       { id, tokenId },
       {
         secret: this.config.getOrThrow<string>('JWT_REFRESH_SECRET'),
-        expiresIn: this.config.getOrThrow<number>('JWT_REFRESH_EXPIRY'),
+        expiresIn: parseInt(this.config.getOrThrow('JWT_REFRESH_EXPIRY')),
       },
     );
   }
