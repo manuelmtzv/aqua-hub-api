@@ -5,7 +5,7 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
-  Put,
+  Patch,
   UseGuards,
 } from '@nestjs/common';
 import { PostService } from './post.service';
@@ -27,7 +27,7 @@ export class PostController {
     return this.postService.findOne(id);
   }
 
-  @Put(':id')
+  @Patch(':id')
   async update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updatePostDto: UpdatePostDto,
