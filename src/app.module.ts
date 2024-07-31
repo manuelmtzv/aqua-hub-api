@@ -9,6 +9,7 @@ import {
   UserModule,
   MediaModule,
   PostModule,
+  CommentModule,
 } from '@/modules';
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import {
     UserModule,
     MediaModule,
     PostModule,
+    CommentModule,
   ],
   controllers: [],
   providers: [],
