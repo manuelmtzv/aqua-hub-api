@@ -28,8 +28,8 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  @UseGuards(AuthGuard('jwt-refresh'))
   @Post('refresh')
+  @UseGuards(AuthGuard('jwt-refresh'))
   async refresh(@Req() req: RequestWithRefreshToken) {
     const { user, tokenId, refreshToken } = req.user;
     return this.authService.updateRefreshToken(user, tokenId, refreshToken);

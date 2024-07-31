@@ -3,7 +3,7 @@ import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { isUUID } from 'class-validator';
 import { User } from '~/src/entities';
-import { CreateUserDto } from './dto/createUser.dto';
+import { CreateUserDto } from './dtos/createUser.dto';
 
 @Injectable()
 export class UserService {

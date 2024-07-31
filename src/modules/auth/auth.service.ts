@@ -25,12 +25,13 @@ export class AuthService {
   async validateUser(identifier: string, password: string) {
     const user = await this.usersService.findOne(identifier);
 
-    if (!user) return new BadRequestException('Email or password is incorrect');
+    if (!user)
+      return new BadRequestException('Email or password are incorrect');
 
     const valid = await argon.verify(user.hashedPassword, password);
 
     if (!valid)
-      return new BadRequestException('Email or password is incorrect');
+      return new BadRequestException('Email or password are incorrect');
 
     return null;
   }
@@ -69,13 +70,13 @@ export class AuthService {
     const user = await this.usersService.findOne(loginDto.identifier);
 
     if (!user) {
-      throw new BadRequestException('Email or password is incorrect');
+      throw new BadRequestException('Email or password are incorrect');
     }
 
     const valid = await argon.verify(user.hashedPassword, loginDto.password);
 
     if (!valid) {
-      throw new BadRequestException('Email or password is incorrect');
+      throw new BadRequestException('Email or password are incorrect');
     }
 
     const tokens = await this.generateJwtTokens({ id: user.id });
@@ -145,11 +146,13 @@ export class AuthService {
         expiresAt: refreshExpiresAt,
       });
 
-      tokens.accessToken = await this.generateAccessToken(id);
-      tokens.refreshToken = await this.generateRefreshToken(
-        id,
-        refreshToken.id,
-      );
+      const [accessToken, generatedRefreshToken] = await Promise.all([
+        this.generateAccessToken(id),
+        this.generateRefreshToken(id, refreshToken.id),
+      ]);
+
+      tokens.accessToken = accessToken;
+      tokens.refreshToken = generatedRefreshToken;
 
       refreshToken.hashedToken = await argon.hash(tokens.refreshToken);
 
@@ -166,8 +169,8 @@ export class AuthService {
     return this.jwtService.signAsync(
       { id },
       {
-        secret: this.config.getOrThrow('JWT_SECRET'),
-        expiresIn: this.config.getOrThrow('JWT_EXPIRY'),
+        secret: this.config.getOrThrow<string>('JWT_SECRET'),
+        expiresIn: parseInt(this.config.getOrThrow('JWT_EXPIRY')),
       },
     );
   }
@@ -179,8 +182,8 @@ export class AuthService {
     return this.jwtService.signAsync(
       { id, tokenId },
       {
-        secret: this.config.getOrThrow('JWT_REFRESH_SECRET'),
-        expiresIn: this.config.getOrThrow('JWT_REFRESH_EXPIRY'),
+        secret: this.config.getOrThrow<string>('JWT_REFRESH_SECRET'),
+        expiresIn: parseInt(this.config.getOrThrow('JWT_REFRESH_EXPIRY')),
       },
     );
   }
