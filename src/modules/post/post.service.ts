@@ -1,12 +1,12 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Post } from '~/src/entities';
-import { UpdatePostDto } from './dtos/updatePost.dto';
 import {
   listResponse,
   type ListResponse,
 } from '~/src/shared/functions/ListResponse';
+import { Post } from '~/src/entities';
+import { UpdatePostDto } from './dtos/updatePost.dto';
 
 @Injectable()
 export class PostService {
