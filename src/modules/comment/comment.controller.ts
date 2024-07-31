@@ -8,8 +8,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { AccessJwtGuard } from '../auth/guards/accessJwt.guard';
-import { GetUser } from '../auth/decorators/getUser.decorator';
+import { AccessJwtGuard } from '@/shared/guards/accessJwt.guard';
+import { GetUser } from '@/shared/decorators/getUser.decorator';
 import { CreateCommentDto } from './dtos';
 
 @Controller('comments')

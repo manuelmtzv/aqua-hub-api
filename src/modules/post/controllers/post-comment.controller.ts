@@ -1,5 +1,5 @@
 import { Body, Controller, Param, Post } from '@nestjs/common';
-import { GetUser } from '@/modules/auth/decorators/getUser.decorator';
+import { GetUser } from '@/shared/decorators/getUser.decorator';
 import { CommentService } from '@/modules/comment/comment.service';
 import { CreateCommentDto } from '@/modules/comment/dtos';
 
