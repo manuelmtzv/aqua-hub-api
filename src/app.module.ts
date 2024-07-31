@@ -9,6 +9,8 @@ import {
   UserModule,
   MediaModule,
   PostModule,
+  CommentModule,
+  ReactionModule,
 } from '@/modules';
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import {
     UserModule,
     MediaModule,
     PostModule,
+    CommentModule,
+    ReactionModule,
   ],
   controllers: [],
   providers: [],

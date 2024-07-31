@@ -8,6 +8,8 @@ import {
 } from '@mikro-orm/core';
 import { Post, Reaction, User, Media } from '.';
 
+export type CommentTarget = 'Post' | 'Comment';
+
 @Entity()
 export class Comment {
   @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
@@ -15,6 +17,9 @@ export class Comment {
 
   @Property()
   content!: string;
+
+  @Property()
+  target!: CommentTarget;
 
   @ManyToOne({ entity: () => Comment, nullable: true })
   replyTo?: Comment = null;
