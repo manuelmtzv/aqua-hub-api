@@ -1,7 +1,7 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
-import { Comment } from '~/src/entities';
+import { Comment, CommentTarget } from '~/src/entities';
 import { CreateCommentDto, UpdateCommentDto } from './dtos';
 
 @Injectable()
@@ -22,15 +22,16 @@ export class CommentService {
 
   async create(
     userId: string,
-    target: 'post' | 'comment',
+    target: CommentTarget,
     targetId: string,
     createCommentDto: CreateCommentDto,
   ) {
     const entity =
-      target === 'post' ? { post: targetId } : { replyTo: targetId };
+      target === 'Post' ? { post: targetId } : { replyTo: targetId };
 
     const comment = this.commentRepository.create({
       author: userId,
+      target,
       ...createCommentDto,
       ...entity,
     });

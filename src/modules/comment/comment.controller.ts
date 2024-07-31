@@ -30,7 +30,7 @@ export class CommentController {
   ) {
     return await this.commentsService.create(
       userId,
-      'comment',
+      'Comment',
       commentId,
       createCommentDto,
     );

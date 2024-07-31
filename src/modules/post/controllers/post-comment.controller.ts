@@ -13,6 +13,6 @@ export class PostCommentController {
     @GetUser('id') userId: string,
     @Body() createComment: CreateCommentDto,
   ) {
-    return this.commentService.create(userId, 'post', postId, createComment);
+    return this.commentService.create(userId, 'Post', postId, createComment);
   }
 }
