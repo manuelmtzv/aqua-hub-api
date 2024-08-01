@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Comment, CommentTarget } from '~/src/entities';
 import { CreateCommentDto, UpdateCommentDto } from './dtos';
 
@@ -12,11 +12,25 @@ export class CommentService {
     private readonly em: EntityManager,
   ) {}
 
-  async getPostComments(postId: string) {
+  async findOneRaw(commentId: string) {
+    return await this.commentRepository.findOne({ id: commentId });
+  }
+
+  async findOne(commentId: string) {
+    const comment = await this.commentRepository.findOne(commentId);
+
+    if (!comment) {
+      throw new NotFoundException('Comment not found');
+    }
+
+    return comment;
+  }
+
+  async findPostComments(postId: string) {
     return await this.commentRepository.find({ post: postId });
   }
 
-  async getCommentReplies(commentId: string) {
+  async findCommentReplies(commentId: string) {
     return await this.commentRepository.find({ replyTo: commentId });
   }
 

@@ -18,8 +18,8 @@ export class CommentController {
   constructor(private readonly commentsService: CommentService) {}
 
   @Get(':postId')
-  async getComments(@Param('postId') postId: string) {
-    return await this.commentsService.getPostComments(postId);
+  async findComments(@Param('postId') postId: string) {
+    return await this.commentsService.findPostComments(postId);
   }
 
   @Post(':commentId/replies')
