@@ -18,7 +18,7 @@ export class Comment {
   @Property()
   content!: string;
 
-  @Property()
+  @Property({ type: 'text' })
   target!: CommentTarget;
 
   @ManyToOne({ entity: () => Comment, nullable: true })

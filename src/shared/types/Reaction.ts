@@ -10,3 +10,5 @@ const reactionType = {
 } as const;
 
 export type ReactionType = (typeof reactionType)[keyof typeof reactionType];
+
+export const reactionTypes = Object.values(reactionType);
