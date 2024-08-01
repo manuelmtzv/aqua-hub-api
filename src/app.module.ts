@@ -11,6 +11,7 @@ import {
   PostModule,
   CommentModule,
   ReactionModule,
+  TopicModule,
 } from '@/modules';
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import {
     PostModule,
     CommentModule,
     ReactionModule,
+    TopicModule,
   ],
   controllers: [],
   providers: [],
