@@ -13,6 +13,7 @@ import {
   ReactionModule,
   TopicModule,
 } from '@/modules';
+import { ForumModule } from './modules/forum/forum.module';
 @Module({
   imports: [
     MikroOrmModule.forRootAsync({
@@ -32,6 +33,7 @@ import {
     CommentModule,
     ReactionModule,
     TopicModule,
+    ForumModule,
   ],
   controllers: [],
   providers: [],
