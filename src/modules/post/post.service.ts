@@ -4,7 +4,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   listResponse,
   type ListResponse,
-} from '~/src/shared/functions/ListResponse';
+} from '@/shared/functions/listResponse';
 import { Post } from '~/src/entities';
 import { UpdatePostDto } from './dtos/updatePost.dto';
 
