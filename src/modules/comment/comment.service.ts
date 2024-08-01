@@ -26,8 +26,7 @@ export class CommentService {
     targetId: string,
     createCommentDto: CreateCommentDto,
   ) {
-    const entity =
-      target === 'Post' ? { post: targetId } : { replyTo: targetId };
+    const entity = this.defineTarget(target, targetId);
 
     const comment = this.commentRepository.create({
       author: userId,
@@ -54,5 +53,14 @@ export class CommentService {
 
     comment.content = updateCommentDto.content;
     await this.em.persistAndFlush(comment);
+  }
+
+  private defineTarget(target: CommentTarget, targetId: string) {
+    switch (target) {
+      case 'Post':
+        return { post: targetId };
+      case 'Comment':
+        return { replyTo: targetId };
+    }
   }
 }
