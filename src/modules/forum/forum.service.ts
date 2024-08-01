@@ -7,6 +7,7 @@ import {
   listResponse,
   type ListResponse,
 } from '@/shared/functions/listResponse';
+import { TopicService } from '@/modules/topic/topic.service';
 
 @Injectable()
 export class ForumService {
@@ -14,6 +15,7 @@ export class ForumService {
     @InjectRepository(Forum)
     private readonly forumRepository: EntityRepository<Forum>,
     private readonly em: EntityManager,
+    private readonly topicService: TopicService,
   ) {}
 
   async findAll(): Promise<ListResponse<Forum>> {
@@ -36,7 +38,20 @@ export class ForumService {
   }
 
   async create(createForumDto: CreateForumDto): Promise<Forum> {
-    // TODO: Validate if topics exist.
+    if (createForumDto.topics && createForumDto.topics.length > 0) {
+      const topics = await Promise.all(
+        createForumDto.topics.map((topicId) =>
+          this.topicService.findOneRaw(topicId),
+        ),
+      );
+
+      if (topics.includes(null)) {
+        throw new NotFoundException('One or more topics were not found');
+      }
+
+      createForumDto.topics = topics.map((topic) => topic.id);
+    }
+
     const forum = this.forumRepository.create(createForumDto);
     await this.em.persistAndFlush(forum);
 
