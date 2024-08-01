@@ -3,9 +3,10 @@ import { Module } from '@nestjs/common';
 import { Forum } from '@/entities';
 import { ForumController } from './forum.controller';
 import { ForumService } from './forum.service';
+import { TopicModule } from '@/modules/topic/topic.module';
 
 @Module({
-  imports: [MikroOrmModule.forFeature([Forum])],
+  imports: [MikroOrmModule.forFeature([Forum]), TopicModule],
   controllers: [ForumController],
   providers: [ForumService],
   exports: [ForumService],
