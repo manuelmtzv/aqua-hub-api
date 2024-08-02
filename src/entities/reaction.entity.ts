@@ -1,5 +1,5 @@
 import { Entity, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
-import { ReactionType } from '@/shared/types/Reaction';
+import { ReactionType } from '~/src/shared/types/reaction.type';
 import { CustomBaseEntity, User, Comment, Post } from '.';
 
 export type ReactionTarget = 'Post' | 'Comment';

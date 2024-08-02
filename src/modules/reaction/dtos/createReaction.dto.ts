@@ -1,4 +1,4 @@
-import { ReactionType, reactionTypes } from '@/shared/types/Reaction';
+import { ReactionType, reactionTypes } from '~/src/shared/types/reaction.type';
 import { IsIn, IsString } from 'class-validator';
 
 export class CreateReactionDto {
