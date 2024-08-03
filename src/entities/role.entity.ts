@@ -7,11 +7,11 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { User } from '.';
+import { CustomBaseEntity, User } from '.';
 import { Action, Subject } from '@/shared/types/appAbility.type';
 
 @Entity()
-export class Role {
+export class Role extends CustomBaseEntity {
   @PrimaryKey()
   id!: number;
 
