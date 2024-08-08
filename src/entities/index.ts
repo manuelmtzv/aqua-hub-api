@@ -8,3 +8,5 @@ export * from './comment.entity';
 export * from './reaction.entity';
 export * from './media.entity';
 export * from './refreshToken.entity';
+
+export * from './role.entity';

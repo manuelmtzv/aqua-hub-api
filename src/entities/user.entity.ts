@@ -1,6 +1,7 @@
 import {
   BeforeCreate,
   Collection,
+  Embedded,
   Entity,
   HiddenProps,
   ManyToMany,
@@ -8,7 +9,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { CustomBaseEntity, Post, RefreshToken } from '.';
+import { CustomBaseEntity, Permission, Post, RefreshToken, Role } from '.';
 import * as argon from 'argon2';
 
 @Entity()
@@ -45,11 +46,17 @@ export class User extends CustomBaseEntity {
   @ManyToMany(() => Post, (post) => post.savedBy, { owner: true })
   savedPosts = new Collection<Post>(this);
 
+  @ManyToMany(() => Role, (role) => role.users, { owner: true })
+  roles = new Collection<Role>(this);
+
   @OneToMany({ entity: () => Post, mappedBy: 'author' })
   posts = new Collection<Post>(this);
 
   @OneToMany({ entity: () => RefreshToken, mappedBy: 'user', hidden: true })
   refreshTokens = new Collection<RefreshToken>(this);
+
+  @Embedded(() => Permission, { array: true })
+  permissions: Permission[] = [];
 
   @BeforeCreate()
   async hashPassword() {
