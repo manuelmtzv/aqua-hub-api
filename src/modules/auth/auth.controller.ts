@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -12,10 +13,19 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { RequestWithRefreshToken } from './types/requestWithRefreshToken.type';
+import { AccessJwtGuard } from '~/src/shared/guards/accessJwt.guard';
+import { GetUser } from '~/src/shared/decorators/getUser.decorator';
+import { User } from '~/src/entities';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Get('validate')
+  @UseGuards(AccessJwtGuard)
+  async validate(@GetUser() user: User) {
+    return { message: 'Valid token', data: user };
+  }
 
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
