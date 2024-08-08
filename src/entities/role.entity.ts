@@ -8,18 +8,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { User } from '.';
-
-@Embeddable()
-export class Permission {
-  @Property()
-  action!: string;
-
-  @Property()
-  subject!: string;
-
-  @Property({ type: 'jsonb' })
-  conditions: Record<string, string> = {};
-}
+import { Action, Subject } from '@/shared/types/appAbility.type';
 
 @Entity()
 export class Role {
@@ -34,4 +23,16 @@ export class Role {
 
   @ManyToMany(() => User, (user) => user.roles)
   users = new Collection<User>(this);
+}
+
+@Embeddable()
+export class Permission {
+  @Property()
+  action!: Action;
+
+  @Property()
+  subject!: Subject;
+
+  @Property({ type: 'jsonb' })
+  conditions: Record<string, string> = {};
 }
