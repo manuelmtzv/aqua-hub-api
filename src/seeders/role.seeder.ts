@@ -18,13 +18,11 @@ export class RoleSeeder extends Seeder {
 
 export const userDefaultAbilities: Permission[] = [
   { action: 'read', subject: 'all' },
-  // Own permissions
   {
     action: 'update',
     subject: 'User',
     conditions: { id: '${user.id}' },
   },
-  // Post permissions
   {
     action: 'create',
     subject: 'Post',
@@ -39,7 +37,6 @@ export const userDefaultAbilities: Permission[] = [
     subject: 'Post',
     conditions: { authorId: '${user.id}' },
   },
-  // Comment permissions
   {
     action: 'create',
     subject: 'Comment',
@@ -54,7 +51,6 @@ export const userDefaultAbilities: Permission[] = [
     subject: 'Comment',
     conditions: { authorId: '${user.id}' },
   },
-  // Comment permissions
   {
     action: 'create',
     subject: 'Comment',
@@ -69,7 +65,6 @@ export const userDefaultAbilities: Permission[] = [
     subject: 'Comment',
     conditions: { authorId: '${user.id}' },
   },
-  // Reaction permissions
   {
     action: 'create',
     subject: 'Reaction',
