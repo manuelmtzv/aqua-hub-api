@@ -8,7 +8,14 @@ export class RoleSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
     em.create(Role, {
       name: 'owner',
-      permissions: [{ action: 'manage', subject: 'all' }],
+      permissions: [
+        { action: 'manage', subject: 'all' },
+        {
+          action: 'update',
+          subject: 'User',
+          conditions: { id: '${user.id}' },
+        },
+      ],
     });
 
     em.create(Role, {

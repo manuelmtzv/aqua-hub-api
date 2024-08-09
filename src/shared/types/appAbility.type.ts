@@ -1,4 +1,4 @@
-import { ForcedSubject, MongoAbility } from '@casl/ability';
+import { MongoAbility, InferSubjects } from '@casl/ability';
 
 export const actions = [
   'manage',
@@ -10,26 +10,8 @@ export const actions = [
 
 export type Action = (typeof actions)[number];
 
-export const subjects = [
-  'User',
-  'Role',
-  'Permission',
-  'Post',
-  'Comment',
-  'Forum',
-  'Media',
-  'Reaction',
-  'Topic',
-  'all',
-] as const;
+export type Subjects = InferSubjects<
+  'Comment' | 'Post' | 'User' | 'Forum' | 'Media' | 'Reaction' | 'Topic' | 'all'
+>;
 
-export type Subject = (typeof subjects)[number];
-
-export type Abilities = [
-  (typeof actions)[number],
-  (
-    | (typeof subjects)[number]
-    | ForcedSubject<Exclude<(typeof subjects)[number], 'all'>>
-  ),
-];
-export type AppAbility = MongoAbility<Abilities>;
+export type AppAbility = MongoAbility<[Action, Subjects]>;
