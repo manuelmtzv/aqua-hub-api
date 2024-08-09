@@ -1,14 +1,13 @@
 import {
   Collection,
-  Embeddable,
-  Embedded,
   Entity,
   ManyToMany,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
 import { CustomBaseEntity, User } from '.';
-import { Action, Subject } from '@/shared/types/appAbility.type';
+import { AppAbility } from '@/shared/types/appAbility.type';
+import { RawRuleOf } from '@casl/ability';
 
 @Entity()
 export class Role extends CustomBaseEntity {
@@ -18,21 +17,9 @@ export class Role extends CustomBaseEntity {
   @Property()
   name!: string;
 
-  @Embedded(() => Permission, { array: true })
-  permissions: Permission[] = [];
+  @Property({ type: 'jsonb' })
+  permissions: RawRuleOf<AppAbility>[] = [];
 
   @ManyToMany(() => User, (user) => user.roles)
   users = new Collection<User>(this);
-}
-
-@Embeddable()
-export class Permission {
-  @Property()
-  action!: Action;
-
-  @Property()
-  subject!: Subject;
-
-  @Property({ type: 'jsonb' })
-  conditions?: Record<string, string> = {};
 }

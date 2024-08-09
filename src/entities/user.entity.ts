@@ -1,7 +1,6 @@
 import {
   BeforeCreate,
   Collection,
-  Embedded,
   Entity,
   HiddenProps,
   ManyToMany,
@@ -9,8 +8,10 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
-import { CustomBaseEntity, Permission, Post, RefreshToken, Role } from '.';
+import { CustomBaseEntity, Post, RefreshToken, Role } from '.';
 import * as argon from 'argon2';
+import { AppAbility } from '@/shared/types/appAbility.type';
+import { RawRuleOf } from '@casl/ability';
 
 @Entity()
 export class User extends CustomBaseEntity {
@@ -55,8 +56,8 @@ export class User extends CustomBaseEntity {
   @OneToMany({ entity: () => RefreshToken, mappedBy: 'user', hidden: true })
   refreshTokens = new Collection<RefreshToken>(this);
 
-  @Embedded(() => Permission, { array: true })
-  permissions: Permission[] = [];
+  @Property({ type: 'jsonb' })
+  permissions: RawRuleOf<AppAbility>[] = [];
 
   @BeforeCreate()
   async hashPassword() {

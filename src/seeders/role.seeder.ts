@@ -1,6 +1,8 @@
 import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import { Permission, Role } from '@/entities';
+import { Role } from '@/entities';
+import { AppAbility } from '../shared/types/appAbility.type';
+import { RawRuleOf } from '@casl/ability';
 
 export class RoleSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
@@ -16,7 +18,7 @@ export class RoleSeeder extends Seeder {
   }
 }
 
-export const userDefaultAbilities: Permission[] = [
+export const userDefaultAbilities: RawRuleOf<AppAbility>[] = [
   { action: 'read', subject: 'all' },
   {
     action: 'update',

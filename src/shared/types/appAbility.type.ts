@@ -1,4 +1,4 @@
-import { Ability } from '@casl/ability';
+import { ForcedSubject, MongoAbility } from '@casl/ability';
 
 export const actions = [
   'manage',
@@ -25,4 +25,11 @@ export const subjects = [
 
 export type Subject = (typeof subjects)[number];
 
-export type AppAbility = Ability<[Action, Subject]>;
+export type Abilities = [
+  (typeof actions)[number],
+  (
+    | (typeof subjects)[number]
+    | ForcedSubject<Exclude<(typeof subjects)[number], 'all'>>
+  ),
+];
+export type AppAbility = MongoAbility<Abilities>;
