@@ -1,6 +1,6 @@
 import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import { Role } from '@/entities';
+import { Permission, Role } from '@/entities';
 
 export class RoleSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
@@ -11,70 +11,72 @@ export class RoleSeeder extends Seeder {
 
     em.create(Role, {
       name: 'user',
-      permissions: [
-        { action: 'read', subject: 'all' },
-        // Own permissions
-        {
-          action: 'update',
-          subject: 'User',
-          condition: { id: '${user.id}' },
-        },
-        // Post permissions
-        {
-          action: 'create',
-          subject: 'Post',
-        },
-        {
-          action: 'update',
-          subject: 'Post',
-          condition: { authorId: '${user.id}' },
-        },
-        {
-          action: 'delete',
-          subject: 'Post',
-          condition: { authorId: '${user.id}' },
-        },
-        // Comment permissions
-        {
-          action: 'create',
-          subject: 'Comment',
-        },
-        {
-          action: 'update',
-          subject: 'Comment',
-          condition: { authorId: '${user.id}' },
-        },
-        {
-          action: 'delete',
-          subject: 'Comment',
-          condition: { authorId: '${user.id}' },
-        },
-        // Comment permissions
-        {
-          action: 'create',
-          subject: 'Comment',
-        },
-        {
-          action: 'update',
-          subject: 'Comment',
-          condition: { authorId: '${user.id}' },
-        },
-        {
-          action: 'delete',
-          subject: 'Comment',
-          condition: { authorId: '${user.id}' },
-        },
-        // Reaction permissions
-        {
-          action: 'create',
-          subject: 'Reaction',
-        },
-        {
-          action: 'delete',
-          subject: 'Reaction',
-          condition: { authorId: '${user.id}' },
-        },
-      ],
+      permissions: userDefaultAbilities,
     });
   }
 }
+
+export const userDefaultAbilities: Permission[] = [
+  { action: 'read', subject: 'all' },
+  // Own permissions
+  {
+    action: 'update',
+    subject: 'User',
+    conditions: { id: '${user.id}' },
+  },
+  // Post permissions
+  {
+    action: 'create',
+    subject: 'Post',
+  },
+  {
+    action: 'update',
+    subject: 'Post',
+    conditions: { authorId: '${user.id}' },
+  },
+  {
+    action: 'delete',
+    subject: 'Post',
+    conditions: { authorId: '${user.id}' },
+  },
+  // Comment permissions
+  {
+    action: 'create',
+    subject: 'Comment',
+  },
+  {
+    action: 'update',
+    subject: 'Comment',
+    conditions: { authorId: '${user.id}' },
+  },
+  {
+    action: 'delete',
+    subject: 'Comment',
+    conditions: { authorId: '${user.id}' },
+  },
+  // Comment permissions
+  {
+    action: 'create',
+    subject: 'Comment',
+  },
+  {
+    action: 'update',
+    subject: 'Comment',
+    conditions: { authorId: '${user.id}' },
+  },
+  {
+    action: 'delete',
+    subject: 'Comment',
+    conditions: { authorId: '${user.id}' },
+  },
+  // Reaction permissions
+  {
+    action: 'create',
+    subject: 'Reaction',
+  },
+  {
+    action: 'delete',
+    subject: 'Reaction',
+    conditions: { authorId: '${user.id}' },
+  },
+];

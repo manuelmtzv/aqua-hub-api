@@ -34,5 +34,5 @@ export class Permission {
   subject!: Subject;
 
   @Property({ type: 'jsonb' })
-  conditions: Record<string, string> = {};
+  conditions?: Record<string, string> = {};
 }
