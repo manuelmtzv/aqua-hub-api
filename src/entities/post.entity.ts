@@ -8,7 +8,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { CustomBaseEntity } from './base.entity';
-import { User, Topic, Reaction, Media, Forum } from '.';
+import { User, Topic, Reaction, Media, Forum, Language } from '.';
 
 @Entity()
 export class Post extends CustomBaseEntity {
@@ -36,9 +36,13 @@ export class Post extends CustomBaseEntity {
   @ManyToMany({ entity: () => Topic, inversedBy: 'posts', owner: true })
   topics = new Collection<Topic>(this);
 
+  @ManyToOne({ entity: () => Language, })
+  language!: Language;
+
   @OneToMany({ entity: () => Reaction, mappedBy: 'post' })
   reactions = new Collection<Reaction>(this);
 
   @OneToMany({ entity: () => Media, mappedBy: 'post' })
   media = new Collection<Media>(this);
+
 }
