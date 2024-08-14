@@ -7,6 +7,7 @@ export class TopicSeeder extends Seeder {
     em.create(Topic, {
       translations: [
         {
+          code: 'es',
           title: 'Alimentación',
           description:
             'Temas relacionados a la alimentación de los peces y animales acuáticos.',
@@ -18,6 +19,7 @@ export class TopicSeeder extends Seeder {
     em.create(Topic, {
       translations: [
         {
+          code: 'es',
           title: 'Enfermedades',
           description:
             'Temas relacionados a las enfermedades de los peces y animales acuáticos.',
@@ -29,6 +31,7 @@ export class TopicSeeder extends Seeder {
     em.create(Topic, {
       translations: [
         {
+          code: 'es',
           title: 'Equipamiento',
           description:
             'Temas relacionados al equipamiento necesario para mantener un acuario.',
@@ -40,6 +43,7 @@ export class TopicSeeder extends Seeder {
     em.create(Topic, {
       translations: [
         {
+          code: 'es',
           title: 'Plantas',
           description:
             'Temas relacionados a las plantas acuáticas y su mantenimiento.',
@@ -51,6 +55,7 @@ export class TopicSeeder extends Seeder {
     em.create(Topic, {
       translations: [
         {
+          code: 'es',
           title: 'Peces',
           description:
             'Temas relacionados a los peces y animales acuáticos en general.',
@@ -62,6 +67,7 @@ export class TopicSeeder extends Seeder {
     em.create(Topic, {
       translations: [
         {
+          code: 'es',
           title: 'Reproducción',
           description:
             'Temas relacionados a la reproducción de los peces y animales acuáticos.',
@@ -73,6 +79,7 @@ export class TopicSeeder extends Seeder {
     em.create(Topic, {
       translations: [
         {
+          code: 'es',
           title: 'Sustrato',
           description:
             'Temas relacionados al sustrato y su importancia en un acuario.',
@@ -84,6 +91,7 @@ export class TopicSeeder extends Seeder {
     em.create(Topic, {
       translations: [
         {
+          code: 'es',
           title: 'Tratamiento de agua',
           description:
             'Temas relacionados al tratamiento del agua para mantener un acuario.',
@@ -95,6 +103,7 @@ export class TopicSeeder extends Seeder {
     em.create(Topic, {
       translations: [
         {
+          code: 'es',
           title: 'Consejos generales',
           description:
             'Consejos generales para mantener un acuario en buen estado',

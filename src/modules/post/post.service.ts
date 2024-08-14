@@ -17,11 +17,18 @@ export class PostService {
   ) {}
 
   async findAll(): Promise<ListResponse<Post>> {
-    return listResponse(await this.postRepository.findAll());
+    return listResponse(
+      await this.postRepository.findAll({
+        populate: ['reactions', 'topic', 'topics', 'forum'],
+      }),
+    );
   }
 
   async findOneRaw(id: string): Promise<Post | null> {
-    return this.postRepository.findOne({ id });
+    return this.postRepository.findOne(
+      { id },
+      { populate: ['reactions', 'topic', 'topics', 'forum'] },
+    );
   }
 
   async findOne(id: string): Promise<Post | null> {

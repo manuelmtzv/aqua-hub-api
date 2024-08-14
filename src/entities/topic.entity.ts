@@ -59,9 +59,6 @@ export class TopicTranslation {
   @Property({ type: 'text' })
   description!: string;
 
-  @Property({ type: 'text' })
-  color!: string;
-
   @Property({ type: 'boolean', default: false })
   enabled: boolean = false;
 }

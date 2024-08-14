@@ -2,9 +2,7 @@ import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { ConfigModule } from '@nestjs/config';
 import { ForumModule } from './modules/forum/forum.module';
-import { AcceptLanguageResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import mikroOrmConfig from '~/mikro-orm.config';
-import * as path from 'path';
 
 import {
   AuthModule,
