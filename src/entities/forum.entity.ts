@@ -1,4 +1,6 @@
 import {
+  BeforeCreate,
+  BeforeUpdate,
   Collection,
   Embeddable,
   Embedded,
@@ -11,6 +13,7 @@ import {
 import { CustomBaseEntity } from './base.entity';
 import { Topic } from './topic.entity';
 import { Post } from './post.entity';
+import { BadRequestException } from '@nestjs/common';
 
 @Entity()
 export class Forum extends CustomBaseEntity {
@@ -25,6 +28,24 @@ export class Forum extends CustomBaseEntity {
 
   @ManyToMany({ entity: () => Topic, inversedBy: 'forums' })
   topics = new Collection<Topic>(this);
+
+  @BeforeCreate()
+  beforeCreate() {
+    this.validateTranslations(this);
+  }
+
+  @BeforeUpdate()
+  beforeUpdate() {
+    this.validateTranslations(this);
+  }
+
+  private validateTranslations(entity: Forum) {
+    if (!entity.translations.some((translation) => translation.enabled)) {
+      throw new BadRequestException(
+        'There must be at least one translation with "enabled" set to true.',
+      );
+    }
+  }
 }
 
 @Embeddable()
