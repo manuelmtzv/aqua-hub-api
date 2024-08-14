@@ -1,5 +1,7 @@
 import {
   Collection,
+  Embeddable,
+  Embedded,
   Entity,
   ManyToMany,
   OneToMany,
@@ -15,15 +17,24 @@ export class Forum extends CustomBaseEntity {
   @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
   id!: string;
 
-  @Property()
-  title!: string;
-
-  @Property()
-  description!: string;
+  @Embedded({ entity: () => ForumTranslation, object: true })
+  translations: ForumTranslation[] = [];
 
   @OneToMany({ entity: () => Post, mappedBy: 'forum' })
   posts = new Collection<Post>(this);
 
   @ManyToMany({ entity: () => Topic, inversedBy: 'forums' })
   topics = new Collection<Topic>(this);
+}
+
+@Embeddable()
+export class ForumTranslation {
+  @Property()
+  code!: string;
+
+  @Property()
+  title!: string;
+
+  @Property()
+  description!: string;
 }
