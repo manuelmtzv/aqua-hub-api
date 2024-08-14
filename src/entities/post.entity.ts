@@ -36,7 +36,7 @@ export class Post extends CustomBaseEntity {
   @ManyToMany({ entity: () => Topic, inversedBy: 'posts', owner: true })
   topics = new Collection<Topic>(this);
 
-  @ManyToOne({ entity: () => Language, })
+  @ManyToOne({ entity: () => Language })
   language!: Language;
 
   @OneToMany({ entity: () => Reaction, mappedBy: 'post' })
@@ -44,5 +44,4 @@ export class Post extends CustomBaseEntity {
 
   @OneToMany({ entity: () => Media, mappedBy: 'post' })
   media = new Collection<Media>(this);
-
 }
