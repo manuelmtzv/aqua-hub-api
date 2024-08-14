@@ -1,13 +1,18 @@
-import { IsHexColor, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsHexColor,
+  IsNotEmpty,
+  IsObject,
+  ValidateNested,
+} from 'class-validator';
+import { CreateTopicTranslationDto } from '.';
 
 export class CreateTopicDto {
-  @IsString()
+  @IsObject()
   @IsNotEmpty()
-  title: string;
-
-  @IsString()
-  @MinLength(10)
-  description: string;
+  @ValidateNested({ each: true })
+  @Type(() => CreateTopicTranslationDto)
+  translations: CreateTopicTranslationDto[];
 
   @IsNotEmpty()
   @IsHexColor()
