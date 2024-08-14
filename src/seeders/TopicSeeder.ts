@@ -21,6 +21,7 @@ export class TopicSeeder extends Seeder {
           title: 'Enfermedades',
           description:
             'Temas relacionados a las enfermedades de los peces y animales acuáticos.',
+          enabled: true,
         },
       ],
     });
@@ -31,6 +32,7 @@ export class TopicSeeder extends Seeder {
           title: 'Equipamiento',
           description:
             'Temas relacionados al equipamiento necesario para mantener un acuario.',
+          enabled: true,
         },
       ],
     });
@@ -41,6 +43,7 @@ export class TopicSeeder extends Seeder {
           title: 'Plantas',
           description:
             'Temas relacionados a las plantas acuáticas y su mantenimiento.',
+          enabled: true,
         },
       ],
     });
@@ -51,6 +54,7 @@ export class TopicSeeder extends Seeder {
           title: 'Peces',
           description:
             'Temas relacionados a los peces y animales acuáticos en general.',
+          enabled: true,
         },
       ],
     });
@@ -61,6 +65,7 @@ export class TopicSeeder extends Seeder {
           title: 'Reproducción',
           description:
             'Temas relacionados a la reproducción de los peces y animales acuáticos.',
+          enabled: true,
         },
       ],
     });
@@ -71,6 +76,7 @@ export class TopicSeeder extends Seeder {
           title: 'Sustrato',
           description:
             'Temas relacionados al sustrato y su importancia en un acuario.',
+          enabled: true,
         },
       ],
     });
@@ -81,6 +87,7 @@ export class TopicSeeder extends Seeder {
           title: 'Tratamiento de agua',
           description:
             'Temas relacionados al tratamiento del agua para mantener un acuario.',
+          enabled: true,
         },
       ],
     });
@@ -91,6 +98,7 @@ export class TopicSeeder extends Seeder {
           title: 'Consejos generales',
           description:
             'Consejos generales para mantener un acuario en buen estado',
+          enabled: true,
         },
       ],
     });
