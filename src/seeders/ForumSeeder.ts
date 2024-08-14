@@ -11,6 +11,7 @@ export class ForumSeeder extends Seeder {
           title: 'Agua dulce',
           description:
             'Foro para discutir temas y compartir información acerca del cuidado y mantenimiendo de acuarios de agua dulce.',
+          enabled: true,
         },
       ],
     });
@@ -22,6 +23,7 @@ export class ForumSeeder extends Seeder {
           title: 'Agua salada',
           description:
             'Foro para discutir temas y compartir información acerca del cuidado y mantenimiendo de acuarios de agua salada.',
+          enabled: true,
         },
       ],
     });
@@ -33,6 +35,7 @@ export class ForumSeeder extends Seeder {
           title: 'General',
           description:
             'Foro para discutir temas, comentarios y consejos relacionados a la acuariofilia en general, tanto de agua salada como dulce.',
+          enabled: true,
         },
       ],
     });

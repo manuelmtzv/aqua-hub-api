@@ -29,12 +29,15 @@ export class Forum extends CustomBaseEntity {
 
 @Embeddable()
 export class ForumTranslation {
-  @Property()
+  @Property({ type: 'text' })
   code!: string;
 
-  @Property()
+  @Property({ type: 'text' })
   title!: string;
 
-  @Property()
+  @Property({ type: 'text' })
   description!: string;
+
+  @Property({ type: 'boolean', default: false })
+  enabled: boolean = false;
 }
