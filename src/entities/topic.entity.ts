@@ -1,4 +1,6 @@
 import {
+  BeforeCreate,
+  BeforeUpdate,
   Collection,
   Embeddable,
   Embedded,
@@ -8,6 +10,7 @@ import {
   Property,
 } from '@mikro-orm/core';
 import { CustomBaseEntity, Forum, Post } from '.';
+import { BadRequestException } from '@nestjs/common';
 
 @Entity()
 export class Topic extends CustomBaseEntity {
@@ -25,6 +28,24 @@ export class Topic extends CustomBaseEntity {
 
   @ManyToMany({ entity: () => Post, mappedBy: 'topics' })
   posts = new Collection<Post>(this);
+
+  @BeforeCreate()
+  beforeCreate() {
+    this.validateTranslations(this);
+  }
+
+  @BeforeUpdate()
+  beforeUpdate() {
+    this.validateTranslations(this);
+  }
+
+  private validateTranslations(entity: Topic) {
+    if (!entity.translations.some((translation) => translation.enabled)) {
+      throw new BadRequestException(
+        'There must be at least one translation with "enabled" set to true.',
+      );
+    }
+  }
 }
 
 @Embeddable()
