@@ -1,14 +1,21 @@
-import { IsArray, IsNotEmpty, IsString, IsUUID, Min } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsObject,
+  IsUUID,
+  ValidateNested,
+} from 'class-validator';
+import { CreateForumTranslationDto } from '.';
+import { HasEnabledTranslation } from '@/shared/decorators/hasEnabledTranslation.decorator';
 
 export class CreateForumDto {
-  @IsString()
+  @IsObject()
   @IsNotEmpty()
-  title: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Min(10)
-  description: string;
+  @ValidateNested({ each: true })
+  @Type(() => CreateForumTranslationDto)
+  @HasEnabledTranslation()
+  translations: CreateForumTranslationDto[];
 
   @IsArray()
   @IsUUID('4', { each: true })

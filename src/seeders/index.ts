@@ -1,5 +1,7 @@
-export * from './DatabaseSeeder';
+export * from './database.seeder';
 
-export * from './UserSeeder';
-export * from './TopicSeeder';
-export * from './ForumSeeder';
+export * from './user.seeder';
+export * from './topic.seeder';
+export * from './forum.seeder';
+export * from './language.seeder';
+export * from './post.seeder';

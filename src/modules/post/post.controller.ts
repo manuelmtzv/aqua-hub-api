@@ -6,14 +6,12 @@ import {
   Param,
   ParseUUIDPipe,
   Patch,
-  UseGuards,
 } from '@nestjs/common';
 import { PostService } from './post.service';
-import { AccessJwtGuard } from '@/shared/guards/accessJwt.guard';
 import { UpdatePostDto } from './dtos/updatePost.dto';
 
 @Controller('posts')
-@UseGuards(AccessJwtGuard)
+// @UseGuards(AccessJwtGuard)
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
