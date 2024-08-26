@@ -9,5 +9,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: always
+  typesense:
+    image: typesense/typesense:26.0
+    restart: on-failure
+    ports:
+      - '8108:8108'
+    volumes:
+      - ./typesense-data:/data
+    command: '--data-dir /data --api-key=xyz --enable-cors'
 volumes:
   postgres_data:
