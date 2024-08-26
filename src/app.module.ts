@@ -14,6 +14,7 @@ import {
   ReactionModule,
   TopicModule,
 } from '@/modules';
+import { TypesenseModule } from './modules/typesense/typesense.module';
 
 @Module({
   imports: [
@@ -25,6 +26,16 @@ import {
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+    }),
+    TypesenseModule.forRoot({
+      nodes: [
+        {
+          host: 'localhost',
+          port: 8108,
+          protocol: 'http',
+        },
+      ],
+      apiKey: 'xyz',
     }),
     AuthModule,
     HealthModule,
