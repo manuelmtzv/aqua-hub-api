@@ -6,12 +6,16 @@ import {
   Param,
   ParseUUIDPipe,
   Patch,
+  Post,
+  UseGuards,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { UpdatePostDto } from './dtos/updatePost.dto';
+import { AccessJwtGuard } from '~/src/shared/guards/accessJwt.guard';
+import { CreatePostDto } from './dtos';
+import { GetUser } from '~/src/shared/decorators/getUser.decorator';
 
 @Controller('posts')
-// @UseGuards(AccessJwtGuard)
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
@@ -23,6 +27,15 @@ export class PostController {
   @Get(':id')
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.postService.findOne(id);
+  }
+
+  @UseGuards(AccessJwtGuard)
+  @Post()
+  async create(
+    @GetUser('id') userId: string,
+    @Body() createPostDto: CreatePostDto,
+  ) {
+    return this.postService.create(userId, createPostDto);
   }
 
   @Patch(':id')

@@ -5,4 +5,5 @@ export interface TypesenseModuleOptions {
     protocol: string;
   }>;
   apiKey: string;
+  global?: boolean;
 }

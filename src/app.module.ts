@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { ConfigModule } from '@nestjs/config';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+
 import { ForumModule } from './modules/forum/forum.module';
 import mikroOrmConfig from '~/mikro-orm.config';
 
@@ -18,6 +20,9 @@ import { TypesenseModule } from './modules/typesense/typesense.module';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot({
+      global: true,
+    }),
     MikroOrmModule.forRootAsync({
       useFactory: () => ({
         ...mikroOrmConfig,
@@ -36,6 +41,7 @@ import { TypesenseModule } from './modules/typesense/typesense.module';
         },
       ],
       apiKey: 'xyz',
+      global: true,
     }),
     AuthModule,
     HealthModule,

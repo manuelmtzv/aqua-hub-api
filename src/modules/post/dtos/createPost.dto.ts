@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class CreatePostDto {
   @IsNotEmpty()
@@ -10,10 +10,17 @@ export class CreatePostDto {
   content: string;
 
   @IsNotEmpty()
+  @IsUUID()
   @IsString()
-  topicId: string;
+  language: string;
 
   @IsNotEmpty()
+  @IsUUID()
   @IsString()
-  forumId: string;
+  topic: string;
+
+  @IsNotEmpty()
+  @IsUUID()
+  @IsString()
+  forum: string;
 }

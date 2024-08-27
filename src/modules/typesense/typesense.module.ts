@@ -15,6 +15,7 @@ export class TypesenseModule {
         TypesenseProvider,
       ],
       exports: [TypesenseProvider],
+      global: options.global,
     };
   }
 }

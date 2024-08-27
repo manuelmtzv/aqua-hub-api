@@ -6,9 +6,15 @@ import { PostService } from './post.service';
 import { PostCommentController, PostReactionController } from './controllers';
 import { CommentModule } from '@/modules/comment/comment.module';
 import { ReactionModule } from '@/modules/reaction/reaction.module';
+import { TypesenseModule } from '@/modules/typesense/typesense.module';
 
 @Module({
-  imports: [MikroOrmModule.forFeature([Post]), CommentModule, ReactionModule],
+  imports: [
+    MikroOrmModule.forFeature([Post]),
+    CommentModule,
+    ReactionModule,
+    TypesenseModule,
+  ],
   controllers: [PostController, PostCommentController, PostReactionController],
   providers: [PostService],
   exports: [PostService],
