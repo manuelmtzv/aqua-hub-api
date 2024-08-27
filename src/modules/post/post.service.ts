@@ -75,8 +75,6 @@ export class PostService {
 
   @OnEvent('post.*')
   async handlePostEvents(payload: Post): Promise<void> {
-    console.log('Hello');
-
     try {
       await this.typesense.client
         .collections('posts')
