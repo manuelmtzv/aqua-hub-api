@@ -6,7 +6,7 @@ import {
   listResponse,
   type ListResponse,
 } from '@/shared/functions/listResponse';
-import { Post } from '~/src/entities';
+import { Post, User } from '~/src/entities';
 import { UpdatePostDto } from './dtos/updatePost.dto';
 import { CreatePostDto } from './dtos';
 import { TypesenseProvider } from '@/modules/typesense/typesense.provider';
@@ -46,10 +46,10 @@ export class PostService {
     return post;
   }
 
-  async create(userId: string, data: CreatePostDto): Promise<Post> {
+  async create(user: User, data: CreatePostDto): Promise<Post> {
     const post = this.em.create(Post, {
       ...data,
-      author: userId,
+      author: user,
     });
 
     this.eventEmitter.emit('post.created', post);
@@ -73,13 +73,16 @@ export class PostService {
     await this.em.removeAndFlush(post);
   }
 
-  @OnEvent('post.*')
+  @OnEvent('post.created')
   async handlePostEvents(payload: Post): Promise<void> {
     try {
       await this.typesense.client
         .collections('posts')
         .documents()
-        .create(payload);
+        .create({
+          ...payload,
+          author: payload.author.name,
+        });
     } catch (error) {
       console.error('Error indexing post', error);
     }

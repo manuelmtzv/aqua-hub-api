@@ -14,6 +14,7 @@ import { UpdatePostDto } from './dtos/updatePost.dto';
 import { AccessJwtGuard } from '~/src/shared/guards/accessJwt.guard';
 import { CreatePostDto } from './dtos';
 import { GetUser } from '~/src/shared/decorators/getUser.decorator';
+import { User } from '~/src/entities';
 
 @Controller('posts')
 export class PostController {
@@ -31,11 +32,8 @@ export class PostController {
 
   @UseGuards(AccessJwtGuard)
   @Post()
-  async create(
-    @GetUser('id') userId: string,
-    @Body() createPostDto: CreatePostDto,
-  ) {
-    return this.postService.create(userId, createPostDto);
+  async create(@GetUser() user: User, @Body() createPostDto: CreatePostDto) {
+    return this.postService.create(user, createPostDto);
   }
 
   @Patch(':id')

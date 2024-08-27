@@ -1,8 +1,11 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { TypesenseProvider } from './typesense.provider';
 import { TypesenseModuleOptions } from './interfaces/typesenseModuleOptions.interface';
+import { TypesenseController } from './typsesnese.controller';
 
-@Module({})
+@Module({
+  controllers: [TypesenseController],
+})
 export class TypesenseModule {
   static forRoot(options: TypesenseModuleOptions): DynamicModule {
     return {
