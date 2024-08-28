@@ -10,6 +10,10 @@ import { Post } from '~/src/entities';
 import { UpdatePostDto } from './dtos/updatePost.dto';
 import { CreatePostDto } from './dtos';
 import { TypesenseProvider } from '@/modules/typesense/typesense.provider';
+import {
+  POST_CREATED_EVENT,
+  PostCreatedEvent,
+} from './events/postCreated.event';
 
 @Injectable()
 export class PostService {
@@ -54,7 +58,7 @@ export class PostService {
 
     await this.em.persistAndFlush(post);
 
-    this.eventEmitter.emit('post.created', post.id);
+    this.eventEmitter.emit(POST_CREATED_EVENT, new PostCreatedEvent(post));
 
     return post;
   }
@@ -73,10 +77,10 @@ export class PostService {
     await this.em.removeAndFlush(post);
   }
 
-  @OnEvent('post.created')
-  async handlePostEvents(postId: string): Promise<void> {
+  @OnEvent(POST_CREATED_EVENT)
+  async handlePostEvents(payload: PostCreatedEvent): Promise<void> {
     try {
-      const post = await this.findOneRaw(postId);
+      const post = await this.findOneRaw(payload.post.id);
 
       await this.typesense.client
         .collections('posts')
