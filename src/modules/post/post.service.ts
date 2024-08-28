@@ -28,7 +28,7 @@ export class PostService {
   async findAll(): Promise<ListResponse<Post>> {
     return listResponse(
       await this.postRepository.findAll({
-        populate: ['reactions', 'topic', 'topics', 'forum'],
+        populate: ['reactions', 'topic', 'topics', 'forum', 'author'],
       }),
     );
   }
