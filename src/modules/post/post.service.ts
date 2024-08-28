@@ -6,7 +6,7 @@ import {
   listResponse,
   type ListResponse,
 } from '@/shared/functions/listResponse';
-import { Post, User } from '~/src/entities';
+import { Post } from '~/src/entities';
 import { UpdatePostDto } from './dtos/updatePost.dto';
 import { CreatePostDto } from './dtos';
 import { TypesenseProvider } from '@/modules/typesense/typesense.provider';
@@ -32,7 +32,7 @@ export class PostService {
   async findOneRaw(id: string): Promise<Post | null> {
     return this.postRepository.findOne(
       { id },
-      { populate: ['reactions', 'topic', 'topics', 'forum'] },
+      { populate: ['reactions', 'topic', 'topics', 'forum', 'author'] },
     );
   }
 
@@ -46,15 +46,15 @@ export class PostService {
     return post;
   }
 
-  async create(user: User, data: CreatePostDto): Promise<Post> {
+  async create(userId: string, data: CreatePostDto): Promise<Post> {
     const post = this.em.create(Post, {
       ...data,
-      author: user,
+      author: userId,
     });
 
-    this.eventEmitter.emit('post.created', post);
-
     await this.em.persistAndFlush(post);
+
+    this.eventEmitter.emit('post.created', post.id);
 
     return post;
   }
@@ -74,14 +74,18 @@ export class PostService {
   }
 
   @OnEvent('post.created')
-  async handlePostEvents(payload: Post): Promise<void> {
+  async handlePostEvents(postId: string): Promise<void> {
     try {
+      const post = await this.findOneRaw(postId);
+
       await this.typesense.client
         .collections('posts')
         .documents()
         .create({
-          ...payload,
-          author: payload.author.name,
+          ...post,
+          author: post.author.name,
+          forum: post.forum.translations[0].title,
+          topic: post.topic.translations[0].title,
         });
     } catch (error) {
       console.error('Error indexing post', error);
