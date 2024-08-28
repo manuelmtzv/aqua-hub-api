@@ -28,7 +28,14 @@ export class PostService {
   async findAll(): Promise<ListResponse<Post>> {
     return listResponse(
       await this.postRepository.findAll({
-        populate: ['reactions', 'topic', 'topics', 'forum', 'author'],
+        populate: [
+          'topic',
+          'topics',
+          'forum',
+          'author',
+          'reactions',
+          'comments',
+        ],
       }),
     );
   }
@@ -36,7 +43,16 @@ export class PostService {
   async findOneRaw(id: string): Promise<Post | null> {
     return this.postRepository.findOne(
       { id },
-      { populate: ['reactions', 'topic', 'topics', 'forum', 'author'] },
+      {
+        populate: [
+          'topic',
+          'topics',
+          'forum',
+          'author',
+          'reactions',
+          'comments',
+        ],
+      },
     );
   }
 
