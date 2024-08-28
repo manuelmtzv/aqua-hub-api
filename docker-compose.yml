@@ -11,7 +11,7 @@ services:
     restart: always
   typesense:
     image: typesense/typesense:26.0
-    restart: on-failure
+    restart: always
     ports:
       - '8108:8108'
     volumes:
