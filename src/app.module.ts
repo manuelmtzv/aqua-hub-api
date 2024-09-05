@@ -52,6 +52,7 @@ import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
         watch: true,
       },
       resolvers: [AcceptLanguageResolver],
+      typesOutputPath: join(__dirname, '../src/generated/i18n.generated.ts'),
     }),
     AuthModule,
     HealthModule,

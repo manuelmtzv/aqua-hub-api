@@ -2,14 +2,16 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import * as argon from 'argon2';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { v4 as uuid } from 'uuid';
-import { RegisterDto } from './dto/register.dto';
-import { UserService } from '../user';
 import { JwtService } from '@nestjs/jwt';
-import { LoginDto } from './dto/login.dto';
-import { ConfigService } from '@nestjs/config';
-import { Tokens } from './types';
-import { RefreshToken, User } from '~/src/entities';
+import { I18nService, I18nContext } from 'nestjs-i18n';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
+import { ConfigService } from '@nestjs/config';
+
+import { UserService } from '../user';
+import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
+import { RefreshToken, User } from '@/entities';
+import type { Tokens } from './types';
 
 @Injectable()
 export class AuthService {
@@ -20,18 +22,21 @@ export class AuthService {
     private readonly config: ConfigService,
     private readonly usersService: UserService,
     private readonly jwtService: JwtService,
+    private readonly i18n: I18nService<I18nTranslations>,
   ) {}
 
   async validateUser(identifier: string, password: string) {
     const user = await this.usersService.findOne(identifier);
 
-    if (!user)
-      return new BadRequestException('Email or password are incorrect');
+    const badRequestMessage = this.i18n.t('errors.auth.badRequest', {
+      lang: I18nContext.current().lang,
+    });
 
-    const valid = await argon.verify(user.hashedPassword, password);
+    if (!user) return new BadRequestException(badRequestMessage);
 
-    if (!valid)
-      return new BadRequestException('Email or password are incorrect');
+    const valid = argon.verify(user.hashedPassword, password);
+
+    if (!valid) return new BadRequestException(badRequestMessage);
 
     return null;
   }

@@ -1,1 +1,5 @@
-{}
+{
+  "auth": {
+    "badRequest": "El correo electrónico o la contraseña son incorrectos"
+  }
+}
