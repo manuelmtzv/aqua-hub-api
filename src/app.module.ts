@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { join } from 'path';
 
 import { ForumModule } from './modules/forum/forum.module';
 import mikroOrmConfig from '~/mikro-orm.config';
@@ -17,6 +18,7 @@ import {
   TopicModule,
 } from '@/modules';
 import { TypesenseModule } from './modules/typesense/typesense.module';
+import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
 
 @Module({
   imports: [
@@ -42,6 +44,14 @@ import { TypesenseModule } from './modules/typesense/typesense.module';
       ],
       apiKey: 'xyz',
       global: true,
+    }),
+    I18nModule.forRoot({
+      fallbackLanguage: 'en',
+      loaderOptions: {
+        path: join(__dirname, '/i18n/'),
+        watch: true,
+      },
+      resolvers: [AcceptLanguageResolver],
     }),
     AuthModule,
     HealthModule,
