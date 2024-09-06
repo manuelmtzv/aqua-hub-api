@@ -8,6 +8,7 @@ import {
   type ListResponse,
 } from '@/shared/functions/listResponse';
 import { TopicService } from '@/modules/topic/topic.service';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class ForumService {
@@ -16,6 +17,7 @@ export class ForumService {
     private readonly forumRepository: EntityRepository<Forum>,
     private readonly em: EntityManager,
     private readonly topicService: TopicService,
+    private readonly i18n: I18nService,
   ) {}
 
   async findAll(): Promise<ListResponse<Forum>> {
@@ -31,7 +33,11 @@ export class ForumService {
     const forum = await this.findOneRaw(id);
 
     if (!forum) {
-      throw new NotFoundException('Forum not found');
+      throw new NotFoundException(
+        this.i18n.t('errors.forum.notFound', {
+          lang: I18nContext.current().lang,
+        }),
+      );
     }
 
     return;
@@ -46,7 +52,11 @@ export class ForumService {
       );
 
       if (topics.includes(null)) {
-        throw new NotFoundException('One or more topics were not found');
+        throw new NotFoundException(
+          this.i18n.t('errors.topic.notFound', {
+            lang: I18nContext.current().lang,
+          }),
+        );
       }
 
       createForumDto.topics = topics.map((topic) => topic.id);

@@ -1,8 +1,9 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Comment, CommentTarget } from '~/src/entities';
+import { Comment, CommentTarget } from '@/entities';
 import { CreateCommentDto, UpdateCommentDto } from './dtos';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class CommentService {
@@ -10,6 +11,7 @@ export class CommentService {
     @InjectRepository(Comment)
     private readonly commentRepository: EntityRepository<Comment>,
     private readonly em: EntityManager,
+    private readonly i18n: I18nService,
   ) {}
 
   async findOneRaw(commentId: string) {
@@ -20,7 +22,11 @@ export class CommentService {
     const comment = await this.commentRepository.findOne(commentId);
 
     if (!comment) {
-      throw new NotFoundException('Comment not found');
+      throw new NotFoundException(
+        this.i18n.t('errors.comment.notFound', {
+          lang: I18nContext.current().lang,
+        }),
+      );
     }
 
     return comment;
@@ -62,7 +68,11 @@ export class CommentService {
     });
 
     if (comment.author.id !== userId) {
-      throw new Error('Unauthorized');
+      throw new Error(
+        this.i18n.t('errors.comment.unauthorized', {
+          lang: I18nContext.current().lang,
+        }),
+      );
     }
 
     comment.content = updateCommentDto.content;

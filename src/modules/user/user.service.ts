@@ -4,6 +4,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { isUUID } from 'class-validator';
 import { User } from '~/src/entities';
 import { CreateUserDto } from './dtos/createUser.dto';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class UserService {
@@ -11,6 +12,7 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: EntityRepository<User>,
     private readonly em: EntityManager,
+    private readonly i18n: I18nService,
   ) {}
 
   async findOneRaw(identifier: string): Promise<User | undefined> {
@@ -24,7 +26,12 @@ export class UserService {
   async findOne(identifier: string): Promise<User> {
     const user = await this.findOneRaw(identifier);
 
-    if (!user) throw new NotFoundException('User not found');
+    if (!user)
+      throw new NotFoundException(
+        this.i18n.t('errors.user.notFound', {
+          lang: I18nContext.current().lang,
+        }),
+      );
 
     return user;
   }

@@ -7,6 +7,7 @@ import {
   ListResponse,
 } from '~/src/shared/functions/listResponse';
 import { CreateTopicDto, UpdateTopicDto } from './dtos';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class TopicService {
@@ -14,6 +15,7 @@ export class TopicService {
     @InjectRepository(Topic)
     private readonly topicRepository: EntityRepository<Topic>,
     private readonly em: EntityManager,
+    private readonly i18n: I18nService,
   ) {}
 
   async findAll(): Promise<ListResponse<Topic>> {
@@ -28,7 +30,11 @@ export class TopicService {
     const topic = await this.findOne(id);
 
     if (!topic) {
-      throw new NotFoundException('Topic not found');
+      throw new NotFoundException(
+        this.i18n.t('errors.topic.notFound', {
+          lang: I18nContext.current().lang,
+        }),
+      );
     }
 
     return topic;

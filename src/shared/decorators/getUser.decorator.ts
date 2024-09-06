@@ -5,6 +5,7 @@ import {
   ExecutionContext,
   InternalServerErrorException,
 } from '@nestjs/common';
+import { I18nContext } from 'nestjs-i18n';
 
 type UserProperty = keyof InstanceType<typeof User>;
 
@@ -12,10 +13,13 @@ export const GetUser = createParamDecorator(
   (data: UserProperty | Array<UserProperty>, context: ExecutionContext) => {
     const request = context.switchToHttp().getRequest<RequestWithUser>();
     const user = request.user;
+    const i18n = I18nContext.current().i18n;
 
     if (!user) {
       throw new InternalServerErrorException(
-        'User not found in request context.',
+        i18n.t('errors.user.notFoundInRequest', {
+          lang: I18nContext.current().lang,
+        }),
       );
     }
 

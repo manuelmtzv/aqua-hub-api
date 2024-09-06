@@ -3,9 +3,26 @@
     "badRequest": "Email or password are incorrect",
     "emailInUse": "Email is already in use",
     "usernameInUse": "Username is already in use",
-    "invalidRefreshToken": "Invalid or expired refresh token"
+    "invalidRefreshToken": "Invalid or expired refresh token",
+    "invalidToken": "Invalid token or expired token",
+    "unauthorized": "Unauthorized"
+  },
+  "user": {
+    "notFound": "User not found",
+    "notFoundInRequest": "User not found in request context"
   },
   "forum": {
+    "notFound": "Foro no encontrado",
+    "someNotFound": "One or more topics were not found",
     "translationMissing": "There must be at least one translation with \"enabled\" set to true."
+  },
+  "topic": {
+    "notFound": "Topic not found"
+  },
+  "post": {
+    "notFound": "Post not found"
+  },
+  "comment": {
+    "notFound": "Comment not found"
   }
 }
