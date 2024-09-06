@@ -14,6 +14,7 @@ import {
   POST_CREATED_EVENT,
   PostCreatedEvent,
 } from './events/postCreated.event';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class PostService {
@@ -23,6 +24,7 @@ export class PostService {
     private readonly em: EntityManager,
     private readonly eventEmitter: EventEmitter2,
     private readonly typesense: TypesenseProvider,
+    private readonly i18n: I18nService,
   ) {}
 
   async findAll(): Promise<ListResponse<Post>> {
@@ -60,7 +62,11 @@ export class PostService {
     const post = await this.postRepository.findOne(id);
 
     if (!post) {
-      throw new NotFoundException('Post not found');
+      throw new NotFoundException(
+        this.i18n.t('errors.post.notFound', {
+          lang: I18nContext.current().lang,
+        }),
+      );
     }
 
     return post;

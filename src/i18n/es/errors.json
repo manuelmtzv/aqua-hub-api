@@ -1,0 +1,28 @@
+{
+  "auth": {
+    "badRequest": "El correo electrónico o la contraseña son incorrectos",
+    "emailInUse": "El correo electrónico ya está en uso",
+    "usernameInUse": "El nombre de usuario ya está en uso",
+    "invalidRefreshToken": "Token de actualización inválido o expirado",
+    "invalidToken": "Token inválido o token expirado",
+    "unauthorized": "No autorizado"
+  },
+  "user": {
+    "notFound": "Usuario no encontrado",
+    "notFoundInRequest": "Usuario no encontrado en el contexto de la solicitud"
+  },
+  "forum": {
+    "notFound": "Foro no encontrado",
+    "someNotFound": "Uno o más foros no se encontraron",
+    "translationMissing": "Debe de haber al menos una traducción con \"enabled\" establecido a true."
+  },
+  "topic": {
+    "notFound": "Tema no encontrado"
+  },
+  "post": {
+    "notFound": "Publicación no encontrada"
+  },
+  "comment": {
+    "notFound": "Comentario no encontrado"
+  }
+}

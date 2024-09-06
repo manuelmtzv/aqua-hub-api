@@ -13,9 +13,9 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { RequestWithRefreshToken } from './types/requestWithRefreshToken.type';
-import { AccessJwtGuard } from '~/src/shared/guards/accessJwt.guard';
-import { GetUser } from '~/src/shared/decorators/getUser.decorator';
-import { User } from '~/src/entities';
+import { AccessJwtGuard } from '@/shared/guards/accessJwt.guard';
+import { GetUser } from '@/shared/decorators/getUser.decorator';
+import { User } from '@/entities';
 
 @Controller('auth')
 export class AuthController {

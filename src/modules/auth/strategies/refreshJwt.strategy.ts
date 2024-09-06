@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import { RefreshJwtPayload } from '../types';
 import { EntityManager } from '@mikro-orm/postgresql';
+import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class RefreshJwtStrategy extends PassportStrategy(
@@ -15,6 +16,7 @@ export class RefreshJwtStrategy extends PassportStrategy(
   constructor(
     private readonly userService: UserService,
     private readonly em: EntityManager,
+    private readonly i18n: I18nService,
     config: ConfigService,
   ) {
     super({
@@ -33,7 +35,11 @@ export class RefreshJwtStrategy extends PassportStrategy(
     const user = await this.userService.findOneRaw(id);
 
     if (!user) {
-      throw new UnauthorizedException('Invalid or expired token.');
+      throw new UnauthorizedException(
+        this.i18n.t('errors.auth.invalidToken', {
+          lang: I18nContext.current().lang,
+        }),
+      );
     }
 
     delete user.hashedPassword;
