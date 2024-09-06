@@ -9,8 +9,7 @@ async function bootstrap() {
   const config = app.get(ConfigService);
 
   app.enableCors({
-    origin: 'http://localhost:3004',
-    credentials: true,
+    origin: '*',
   });
   app.setGlobalPrefix('api');
 

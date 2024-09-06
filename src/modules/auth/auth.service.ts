@@ -74,14 +74,18 @@ export class AuthService {
   async login(loginDto: LoginDto): Promise<Tokens & { data: Partial<User> }> {
     const user = await this.usersService.findOne(loginDto.identifier);
 
+    const badRequestMessage = this.i18n.t('errors.auth.badRequest', {
+      lang: I18nContext.current().lang,
+    });
+
     if (!user) {
-      throw new BadRequestException('Email or password are incorrect');
+      throw new BadRequestException(badRequestMessage);
     }
 
     const valid = await argon.verify(user.hashedPassword, loginDto.password);
 
     if (!valid) {
-      throw new BadRequestException('Email or password are incorrect');
+      throw new BadRequestException(badRequestMessage);
     }
 
     const tokens = await this.generateJwtTokens({ id: user.id });
