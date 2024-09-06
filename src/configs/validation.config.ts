@@ -3,6 +3,7 @@ import {
   INestApplication,
   ValidationPipe,
 } from '@nestjs/common';
+import { I18nValidationPipe } from 'nestjs-i18n';
 
 export function validationConfig(app: INestApplication) {
   app.useGlobalPipes(
@@ -17,5 +18,6 @@ export function validationConfig(app: INestApplication) {
         );
       },
     }),
+    new I18nValidationPipe(),
   );
 }

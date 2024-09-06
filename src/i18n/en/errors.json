@@ -1,5 +1,11 @@
 {
   "auth": {
-    "badRequest": "Email or password are incorrect"
+    "badRequest": "Email or password are incorrect",
+    "emailInUse": "Email is already in use",
+    "usernameInUse": "Username is already in use",
+    "invalidRefreshToken": "Invalid or expired refresh token"
+  },
+  "forum": {
+    "translationMissing": "There must be at least one translation with \"enabled\" set to true."
   }
 }

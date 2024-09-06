@@ -47,13 +47,21 @@ export class AuthService {
     let foundUser = await this.usersService.findOneRaw(registerDto.email);
 
     if (foundUser) {
-      throw new BadRequestException('This email is already in use.');
+      throw new BadRequestException(
+        this.i18n.t('errors.auth.emailInUse', {
+          lang: I18nContext.current().lang,
+        }),
+      );
     }
 
     foundUser = await this.usersService.findOneRaw(registerDto.username);
 
     if (foundUser) {
-      throw new BadRequestException('This username is already in use.');
+      throw new BadRequestException(
+        this.i18n.t('errors.auth.usernameInUse', {
+          lang: I18nContext.current().lang,
+        }),
+      );
     }
 
     const user = await this.usersService.create({
@@ -115,7 +123,11 @@ export class AuthService {
       await this.refreshTokenRepository.findOne(tokenId);
 
     if (!refreshTokenEntity) {
-      throw new BadRequestException('Invalid or disabled refresh token');
+      throw new BadRequestException(
+        this.i18n.t('errors.auth.invalidRefreshToken', {
+          lang: I18nContext.current().lang,
+        }),
+      );
     }
 
     const valid = await argon.verify(
@@ -124,7 +136,11 @@ export class AuthService {
     );
 
     if (!valid) {
-      throw new BadRequestException('Invalid or disabled refresh token');
+      throw new BadRequestException(
+        this.i18n.t('errors.auth.invalidRefreshToken', {
+          lang: I18nContext.current().lang,
+        }),
+      );
     }
 
     return {

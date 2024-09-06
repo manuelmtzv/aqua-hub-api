@@ -1,5 +1,11 @@
 {
   "auth": {
-    "badRequest": "El correo electrónico o la contraseña son incorrectos"
+    "badRequest": "El correo electrónico o la contraseña son incorrectos",
+    "emailInUse": "El correo electrónico ya está en uso",
+    "usernameInUse": "El nombre de usuario ya está en uso",
+    "invalidRefreshToken": "Token de actualización inválido o expirado"
+  },
+  "forum": {
+    "translationMissing": "Debe de haber al menos una traducción con \"enabled\" establecido a true."
   }
 }
