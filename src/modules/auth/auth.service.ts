@@ -22,7 +22,7 @@ export class AuthService {
     private readonly config: ConfigService,
     private readonly usersService: UserService,
     private readonly jwtService: JwtService,
-    private readonly i18n: I18nService<I18nTranslations>,
+    private readonly i18n: I18nService,
   ) {}
 
   async validateUser(identifier: string, password: string) {

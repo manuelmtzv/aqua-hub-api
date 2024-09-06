@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { join } from 'path';
 
@@ -45,14 +45,16 @@ import { AcceptLanguageResolver, I18nModule } from 'nestjs-i18n';
       apiKey: 'xyz',
       global: true,
     }),
-    I18nModule.forRoot({
-      fallbackLanguage: 'en',
-      loaderOptions: {
-        path: join(__dirname, '/i18n/'),
-        watch: true,
-      },
+    I18nModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        fallbackLanguage: configService.getOrThrow('FALLBACK_LANGUAGE'),
+        loaderOptions: {
+          path: join(__dirname, '/i18n/'),
+          watch: true,
+        },
+      }),
       resolvers: [AcceptLanguageResolver],
-      typesOutputPath: join(__dirname, '../src/generated/i18n.generated.ts'),
+      inject: [ConfigService],
     }),
     AuthModule,
     HealthModule,
