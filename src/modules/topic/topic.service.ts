@@ -2,10 +2,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Topic } from '@/entities';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
-import {
-  listResponse,
-  ListResponse,
-} from '~/src/shared/functions/listResponse';
+import { listResponse, ListResponse } from '@/shared/utils/listResponse';
 import { CreateTopicDto, UpdateTopicDto } from './dtos';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 

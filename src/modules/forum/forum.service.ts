@@ -1,14 +1,15 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Forum } from '@/entities';
+import { Forum, ForumTranslated } from '@/entities';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { CreateForumDto, UpdateForumDto } from './dtos';
 import {
   listResponse,
   type ListResponse,
-} from '@/shared/functions/listResponse';
+} from '~/src/shared/utils/listResponse';
 import { TopicService } from '@/modules/topic/topic.service';
 import { I18nContext, I18nService } from 'nestjs-i18n';
+import { translateEntities } from '~/src/shared/utils/translatedEntity';
 
 @Injectable()
 export class ForumService {
@@ -20,9 +21,17 @@ export class ForumService {
     private readonly i18n: I18nService,
   ) {}
 
-  async findAll(): Promise<ListResponse<Forum>> {
+  async findAll(): Promise<ListResponse<ForumTranslated>> {
     const forums = await this.forumRepository.findAll();
-    return listResponse<Forum>(forums);
+
+    console.log(JSON.stringify(forums, null, 2));
+
+    const translatedTopics = translateEntities(
+      I18nContext.current().lang,
+      forums,
+    );
+
+    return listResponse<ForumTranslated>(translatedTopics);
   }
 
   async findOneRaw(id: string): Promise<Forum> {

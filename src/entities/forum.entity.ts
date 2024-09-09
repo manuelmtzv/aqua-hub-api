@@ -15,6 +15,7 @@ import { Topic } from './topic.entity';
 import { Post } from './post.entity';
 import { BadRequestException } from '@nestjs/common';
 import { EntityTranslation } from '@/shared/interfaces/entityTranslation.interface';
+import { TranslatedEntity } from '../shared/types/TranslatedEntity';
 
 @Entity()
 export class Forum extends CustomBaseEntity {
@@ -63,3 +64,5 @@ export class ForumTranslation implements EntityTranslation {
   @Property({ type: 'boolean', default: false })
   enabled: boolean = false;
 }
+
+export type ForumTranslated = TranslatedEntity<ForumTranslation, Forum>;

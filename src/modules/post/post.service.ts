@@ -5,7 +5,7 @@ import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
 import {
   listResponse,
   type ListResponse,
-} from '@/shared/functions/listResponse';
+} from '~/src/shared/utils/listResponse';
 import { Post } from '~/src/entities';
 import { UpdatePostDto } from './dtos/updatePost.dto';
 import { CreatePostDto } from './dtos';
