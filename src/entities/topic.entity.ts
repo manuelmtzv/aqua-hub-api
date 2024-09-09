@@ -11,6 +11,7 @@ import {
 } from '@mikro-orm/core';
 import { CustomBaseEntity, Forum, Post } from '.';
 import { BadRequestException } from '@nestjs/common';
+import { EntityTranslation } from '@/shared/interfaces/entityTranslation.interface';
 
 @Entity()
 export class Topic extends CustomBaseEntity {
@@ -49,7 +50,7 @@ export class Topic extends CustomBaseEntity {
 }
 
 @Embeddable()
-export class TopicTranslation {
+export class TopicTranslation implements EntityTranslation {
   @Property({ type: 'text' })
   code!: string;
 

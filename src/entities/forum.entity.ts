@@ -14,6 +14,7 @@ import { CustomBaseEntity } from './base.entity';
 import { Topic } from './topic.entity';
 import { Post } from './post.entity';
 import { BadRequestException } from '@nestjs/common';
+import { EntityTranslation } from '@/shared/interfaces/entityTranslation.interface';
 
 @Entity()
 export class Forum extends CustomBaseEntity {
@@ -49,7 +50,7 @@ export class Forum extends CustomBaseEntity {
 }
 
 @Embeddable()
-export class ForumTranslation {
+export class ForumTranslation implements EntityTranslation {
   @Property({ type: 'text' })
   code!: string;
 
