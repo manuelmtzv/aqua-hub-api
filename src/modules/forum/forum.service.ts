@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Forum, ForumTranslated } from '@/entities';
+import { Forum, ForumTranslated, ForumTranslation } from '@/entities';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { CreateForumDto, UpdateForumDto } from './dtos';
 import {
@@ -24,9 +24,7 @@ export class ForumService {
   async findAll(): Promise<ListResponse<ForumTranslated>> {
     const forums = await this.forumRepository.findAll();
 
-    console.log(JSON.stringify(forums, null, 2));
-
-    const translatedTopics = translateEntities(
+    const translatedTopics = translateEntities<ForumTranslation, Forum>(
       I18nContext.current().lang,
       forums,
     );
