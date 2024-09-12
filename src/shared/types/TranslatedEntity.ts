@@ -5,6 +5,6 @@ export type TranslatableEntity<T extends EntityTranslation> = {
 };
 
 export type TranslatedEntity<
-  TTranslation extends EntityTranslation,
   TEntity extends TranslatableEntity<TTranslation>,
+  TTranslation extends EntityTranslation,
 > = Omit<TEntity, 'translations'> & Omit<TTranslation, 'code' | 'enabled'>;

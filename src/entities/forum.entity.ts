@@ -65,4 +65,4 @@ export class ForumTranslation implements EntityTranslation {
   enabled: boolean = false;
 }
 
-export type ForumTranslated = TranslatedEntity<ForumTranslation, Forum>;
+export type ForumTranslated = TranslatedEntity<Forum, ForumTranslation>;

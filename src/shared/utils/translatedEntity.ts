@@ -7,7 +7,7 @@ import { EntityTranslation } from '@/shared/interfaces/entityTranslation.interfa
 export function translateEntity<
   TTranslation extends EntityTranslation,
   TEntity extends TranslatableEntity<TTranslation>,
->(code: string, entity: TEntity): TranslatedEntity<TTranslation, TEntity> {
+>(code: string, entity: TEntity): TranslatedEntity<TEntity, TTranslation> {
   const translation = entity.translations.find((t) => t.code === code);
 
   if (!translation) {
@@ -30,7 +30,7 @@ export function translateEntities<
 >(
   code: string,
   entities: TEntity[],
-): TranslatedEntity<TTranslation, TEntity>[] {
+): TranslatedEntity<TEntity, TTranslation>[] {
   const available = entities.filter((entity) =>
     entity.translations.some((t) => t.code === code),
   );
