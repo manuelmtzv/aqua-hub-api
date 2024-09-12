@@ -1,10 +1,11 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Topic } from '@/entities';
+import { Topic, TopicTranslated, TopicTranslation } from '@/entities';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { listResponse, ListResponse } from '@/shared/utils/listResponse';
 import { CreateTopicDto, UpdateTopicDto } from './dtos';
 import { I18nContext, I18nService } from 'nestjs-i18n';
+import { translateEntities } from '@/shared/utils/translatedEntity';
 
 @Injectable()
 export class TopicService {
@@ -15,8 +16,15 @@ export class TopicService {
     private readonly i18n: I18nService,
   ) {}
 
-  async findAll(): Promise<ListResponse<Topic>> {
-    return listResponse<Topic>(await this.topicRepository.findAll());
+  async findAll(): Promise<ListResponse<TopicTranslated>> {
+    const topics = await this.topicRepository.findAll();
+
+    const translatedTopics = translateEntities<TopicTranslation, Topic>(
+      I18nContext.current().lang,
+      topics,
+    );
+
+    return listResponse<TopicTranslated>(translatedTopics);
   }
 
   async findOneRaw(id: string): Promise<Topic> {

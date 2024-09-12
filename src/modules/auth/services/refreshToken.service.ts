@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { RefreshToken } from '~/src/entities';
+import { RefreshToken } from '@/entities';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 
 @Injectable()

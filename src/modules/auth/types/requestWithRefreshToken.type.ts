@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { User } from '~/src/entities';
+import { User } from '@/entities';
 
 export type RequestWithRefreshToken = {
   user: {

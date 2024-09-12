@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UploadApiErrorResponse, UploadApiResponse, v2 } from 'cloudinary';
 import { Readable } from 'stream';
-import { MediaStorageService } from '~/src/shared/interfaces/mediaStorageService.interface';
+import { MediaStorageService } from '@/shared/interfaces/mediaStorageService.interface';
 
 @Injectable()
 export class CloudinaryService implements MediaStorageService {

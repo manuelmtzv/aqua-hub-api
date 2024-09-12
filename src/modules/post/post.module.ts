@@ -1,6 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { Post } from '~/src/entities';
+import { Post } from '@/entities';
 import { PostController } from './post.controller';
 import { PostService } from './post.service';
 import { PostCommentController, PostReactionController } from './controllers';

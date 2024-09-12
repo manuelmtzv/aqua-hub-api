@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { GetUser } from '@/shared/decorators/getUser.decorator';
-import { User } from '~/src/entities';
+import { User } from '@/entities';
 import { AccessJwtGuard } from '@/shared/guards/accessJwt.guard';
 
 @Controller('users')

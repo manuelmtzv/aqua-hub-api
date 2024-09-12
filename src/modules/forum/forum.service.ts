@@ -3,13 +3,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Forum, ForumTranslated, ForumTranslation } from '@/entities';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { CreateForumDto, UpdateForumDto } from './dtos';
-import {
-  listResponse,
-  type ListResponse,
-} from '~/src/shared/utils/listResponse';
+import { listResponse, type ListResponse } from '@/shared/utils/listResponse';
 import { TopicService } from '@/modules/topic/topic.service';
 import { I18nContext, I18nService } from 'nestjs-i18n';
-import { translateEntities } from '~/src/shared/utils/translatedEntity';
+import { translateEntities } from '@/shared/utils/translatedEntity';
 
 @Injectable()
 export class ForumService {

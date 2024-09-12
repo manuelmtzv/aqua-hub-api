@@ -2,7 +2,7 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { isUUID } from 'class-validator';
-import { User } from '~/src/entities';
+import { User } from '@/entities';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { I18nContext, I18nService } from 'nestjs-i18n';
 

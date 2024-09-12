@@ -6,7 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AccessJwtStrategy } from './strategies/accessJwt.strategy';
 import { RefreshJwtStrategy } from './strategies';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
-import { RefreshToken } from '~/src/entities';
+import { RefreshToken } from '@/entities';
 
 @Module({
   imports: [

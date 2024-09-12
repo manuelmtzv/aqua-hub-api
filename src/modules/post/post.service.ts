@@ -2,11 +2,8 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
-import {
-  listResponse,
-  type ListResponse,
-} from '~/src/shared/utils/listResponse';
-import { Post } from '~/src/entities';
+import { listResponse, type ListResponse } from '@/shared/utils/listResponse';
+import { Post } from '@/entities';
 import { UpdatePostDto } from './dtos/updatePost.dto';
 import { CreatePostDto } from './dtos';
 import { TypesenseProvider } from '@/modules/typesense/typesense.provider';

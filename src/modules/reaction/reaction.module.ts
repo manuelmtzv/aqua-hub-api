@@ -1,6 +1,6 @@
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
-import { Reaction } from '~/src/entities';
+import { Reaction } from '@/entities';
 import { ReactionService } from './reaction.service';
 
 @Module({
