@@ -12,7 +12,7 @@ export class Language extends CustomBaseEntity {
   @PrimaryKey({ type: 'uuid', defaultRaw: 'gen_random_uuid()' })
   id!: string;
 
-  @Property()
+  @Property({ unique: true })
   name!: string;
 
   @Property()
