@@ -1,17 +1,20 @@
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EventEmitter2, OnEvent } from '@nestjs/event-emitter';
+import { InjectRepository } from '@mikro-orm/nestjs';
+import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
+import { I18nContext, I18nService } from 'nestjs-i18n';
+
+import { TypesenseProvider } from '@/modules/typesense/typesense.provider';
+import { LanguageService } from '@/modules/language/language.service';
+
 import { listResponse, type ListResponse } from '@/shared/utils/listResponse';
-import { Post } from '@/entities';
 import { UpdatePostDto } from './dtos/updatePost.dto';
 import { CreatePostDto } from './dtos';
-import { TypesenseProvider } from '@/modules/typesense/typesense.provider';
+import { Post } from '@/entities';
 import {
   POST_CREATED_EVENT,
   PostCreatedEvent,
 } from './events/postCreated.event';
-import { I18nContext, I18nService } from 'nestjs-i18n';
 
 @Injectable()
 export class PostService {
@@ -22,6 +25,7 @@ export class PostService {
     private readonly eventEmitter: EventEmitter2,
     private readonly typesense: TypesenseProvider,
     private readonly i18n: I18nService,
+    private readonly languageService: LanguageService,
   ) {}
 
   async findAll(): Promise<ListResponse<Post>> {
@@ -35,6 +39,7 @@ export class PostService {
           'reactions',
           'comments',
         ],
+        orderBy: { createdAt: 'DESC' },
       }),
     );
   }
@@ -70,8 +75,19 @@ export class PostService {
   }
 
   async create(userId: string, data: CreatePostDto): Promise<Post> {
+    const language = await this.languageService.findOneRaw(data.language);
+
+    if (!language) {
+      throw new NotFoundException(
+        this.i18n.t('errors.language.notFound', {
+          lang: I18nContext.current().lang,
+        }),
+      );
+    }
+
     const post = this.em.create(Post, {
       ...data,
+      language,
       author: userId,
     });
 

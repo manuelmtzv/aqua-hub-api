@@ -24,5 +24,8 @@
   },
   "comment": {
     "notFound": "Comentario no encontrado"
+  },
+  "language": {
+    "notFound": "Idioma no encontrado"
   }
 }

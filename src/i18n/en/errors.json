@@ -24,5 +24,8 @@
   },
   "comment": {
     "notFound": "Comment not found"
+  },
+  "language": {
+    "notFound": "Language not found"
   }
 }
