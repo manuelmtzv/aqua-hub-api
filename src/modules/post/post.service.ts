@@ -61,7 +61,7 @@ export class PostService {
   }
 
   async findOne(id: string): Promise<Post | null> {
-    const post = await this.postRepository.findOne(id);
+    const post = await this.findOneRaw(id);
 
     if (!post) {
       throw new NotFoundException(
