@@ -36,6 +36,12 @@ export class UserService {
     return user;
   }
 
+  async findMe(id: string): Promise<User> {
+    return this.userRepository.findOne(id, {
+      populate: ['followers', 'posts', 'savedPosts'],
+    });
+  }
+
   async findAll(): Promise<User[]> {
     return this.userRepository.findAll();
   }
